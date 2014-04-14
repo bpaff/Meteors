@@ -8,7 +8,7 @@ pygame.init()
 
 size = width, height = 600, 500
 speed = [0,0]
-
+speedMax = 10
 
 screen = pygame.display.set_mode(size)
 black =255,255,255
@@ -18,18 +18,34 @@ shiprect = ship.get_rect()
 shiprect.left = width/2
 shiprect.top = height/2
 
+lastTime = pygame.time.get_ticks()
 while 1:
-    
-    shiprect= shiprect.move(speed)
-    screen.fill(black)
     for event in pygame.event.get():
-        if event.type== pygame.KEYDOWN and event.key == pygame.K_UP:
-            speed=[0,-1]
-        if event.type== pygame.KEYDOWN and event.key == pygame.K_DOWN:
-            speed=[0,1]
-        if event.type== pygame.KEYDOWN and event.key == pygame.K_LEFT:
-            speed=[-1,0]
-        if event.type== pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-            speed=[1,0]
+        if event.type == pygame.QUIT: 
+            sys.exit()
+        if event.type== pygame.KEYDOWN and event.key == pygame.K_UP and abs(speed[1]) < speedMax:
+            speed[1] = speed[1] - 1;
+        if event.type== pygame.KEYDOWN and event.key == pygame.K_DOWN and abs(speed[1]) < speedMax:
+            speed[1] = speed[1] + 1;
+        if event.type== pygame.KEYDOWN and event.key == pygame.K_LEFT and abs(speed[1]) < speedMax:
+            speed[0] = speed[0] - 1;
+        if event.type== pygame.KEYDOWN and event.key == pygame.K_RIGHT and abs(speed[1]) < speedMax:
+            speed[0] = speed[1] + 1;
+    
+    #test for edge of screen
+    if shiprect.left>width:
+        shiprect.right=0
+    if shiprect.top>height:
+        shiprect.bottom=0
+    if shiprect.right<0:
+        shiprect.left=width
+    if shiprect.bottom<0:
+        shiprect.top=height
+    
+    #update position every second
+    if pygame.time.get_ticks() - lastTime > 100:
+        lastTime = pygame.time.get_ticks() 
+        shiprect= shiprect.move(speed)
+    screen.fill(black)
     screen.blit(ship,shiprect)
     pygame.display.flip()
