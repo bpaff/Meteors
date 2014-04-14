@@ -8,7 +8,7 @@ pygame.init()
 
 size = width, height = 600, 500
 speed = [0,0]
-speedMax = 10
+speedMax = 50
 
 screen = pygame.display.set_mode(size)
 black =255,255,255
@@ -33,10 +33,10 @@ while 1:
             speed[1] = speed[1] - 1;
         if event.type== pygame.KEYDOWN and event.key == pygame.K_DOWN and abs(speed[1]) < speedMax:
             speed[1] = speed[1] + 1;
-        if event.type== pygame.KEYDOWN and event.key == pygame.K_LEFT and abs(speed[1]) < speedMax:
+        if event.type== pygame.KEYDOWN and event.key == pygame.K_LEFT and abs(speed[0]) < speedMax:
             speed[0] = speed[0] - 1;
-        if event.type== pygame.KEYDOWN and event.key == pygame.K_RIGHT and abs(speed[1]) < speedMax:
-            speed[0] = speed[1] + 1;
+        if event.type== pygame.KEYDOWN and event.key == pygame.K_RIGHT and abs(speed[0]) < speedMax:
+            speed[0] = speed[0] + 1;
     
     #test for edge of screen
     if shiprect.left>width:
@@ -49,7 +49,7 @@ while 1:
         shiprect.top=height
     
     #update position every second
-    if pygame.time.get_ticks() - lastTime > 100:
+    if pygame.time.get_ticks() - lastTime > 50:
         lastTime = pygame.time.get_ticks() 
         shiprect= shiprect.move(speed)
     ##meteorrect = meteorrect.move(mspeed)
