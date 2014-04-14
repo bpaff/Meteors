@@ -18,6 +18,12 @@ shiprect = ship.get_rect()
 shiprect.left = width/2
 shiprect.top = height/2
 
+mspeed= [1,1]
+meteor = pygame.image.load("Asteroid.png")
+meteorrect = meteor.get_rect()
+meteorrect.left = width/4
+meteorrect.top =  height/4
+
 lastTime = pygame.time.get_ticks()
 while 1:
     for event in pygame.event.get():
@@ -46,6 +52,8 @@ while 1:
     if pygame.time.get_ticks() - lastTime > 100:
         lastTime = pygame.time.get_ticks() 
         shiprect= shiprect.move(speed)
+    ##meteorrect = meteorrect.move(mspeed)
     screen.fill(black)
     screen.blit(ship,shiprect)
+    screen.blit(meteor, meteorrect)
     pygame.display.flip()
