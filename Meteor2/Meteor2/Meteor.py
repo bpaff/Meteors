@@ -52,7 +52,11 @@ while 1:
     if pygame.time.get_ticks() - lastTime > 50:
         lastTime = pygame.time.get_ticks() 
         shiprect= shiprect.move(speed)
-    ##meteorrect = meteorrect.move(mspeed)
+    
+    #meteor collision
+    if shiprect.colliderect(meteorrect):
+        shiprect.left = width/2
+        shiprect.top = height/2
     screen.fill(black)
     screen.blit(ship,shiprect)
     screen.blit(meteor, meteorrect)
