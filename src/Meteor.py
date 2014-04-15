@@ -14,21 +14,21 @@ screen = pygame.display.set_mode(size)
 
 black =255,255,255
 
-ship = ScreenObject.ScreeenObject(screen, "ship.png")
+ship = ScreenObject.ScreeenObject(screen, "../images/ship.png")
 
 ##multiple meteors
 mspeed= [1,1]
-meteor = pygame.image.load("Asteroid.png")
+meteor = pygame.image.load("../images/Asteroid.png")
 meteorrect = meteor.get_rect()
 meteorrect.left = width/4
 meteorrect.top =  height/4
 
-meteor2 = pygame.image.load("Asteroid.png")
+meteor2 = pygame.image.load("../images/Asteroid.png")
 meteorrect2 = meteor.get_rect()
 meteorrect2.left = width/1.5
 meteorrect2.top = height/1.5
 
-meteor3 = ScreenObject.ScreeenObject(screen,"Asteroid.png")
+meteor3 = ScreenObject.ScreeenObject(screen,"../images/Asteroid.png")
 
 lastTime = pygame.time.get_ticks()
 while 1:
