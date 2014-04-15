@@ -57,6 +57,7 @@ while 1:
     if shiprect.colliderect(meteorrect):
         shiprect.left = width/2
         shiprect.top = height/2
+        speed= [0,0]
     screen.fill(black)
     screen.blit(ship,shiprect)
     screen.blit(meteor, meteorrect)
