@@ -18,11 +18,17 @@ shiprect = ship.get_rect()
 shiprect.left = width/2
 shiprect.top = height/2
 
+##multiple meteors
 mspeed= [1,1]
 meteor = pygame.image.load("Asteroid.png")
 meteorrect = meteor.get_rect()
 meteorrect.left = width/4
 meteorrect.top =  height/4
+
+meteor2 = pygame.image.load("Asteroid.png")
+meteorrect2 = meteor.get_rect()
+meteorrect2.left = width/1.5
+meteorrect2.top = height/1.5
 
 lastTime = pygame.time.get_ticks()
 while 1:
@@ -58,7 +64,13 @@ while 1:
         shiprect.left = width/2
         shiprect.top = height/2
         speed= [0,0]
+    if shiprect.colliderect(meteorrect2):
+        shiprect.left = width/2
+        shiprect.top = height/2
+        speed= [0,0]
+    ##draw screen
     screen.fill(black)
     screen.blit(ship,shiprect)
     screen.blit(meteor, meteorrect)
+    screen.blit(meteor2, meteorrect2)
     pygame.display.flip()
