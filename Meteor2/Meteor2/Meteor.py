@@ -11,12 +11,10 @@ speed = [0,0]
 speedMax = 50
 
 screen = pygame.display.set_mode(size)
+
 black =255,255,255
 
-ship = pygame.image.load("ship.png")
-shiprect = ship.get_rect()
-shiprect.left = width/2
-shiprect.top = height/2
+ship = ScreenObject.ScreeenObject(screen, "ship.png")
 
 ##multiple meteors
 mspeed= [1,1]
@@ -47,32 +45,25 @@ while 1:
             speed[0] = speed[0] + 1;
     
     #test for edge of screen
-    if shiprect.left>width:
-        shiprect.right=0
-    if shiprect.top>height:
-        shiprect.bottom=0
-    if shiprect.right<0:
-        shiprect.left=width
-    if shiprect.bottom<0:
-        shiprect.top=height
+ 
     
     #update position every second
     if pygame.time.get_ticks() - lastTime > 50:
         lastTime = pygame.time.get_ticks() 
-        shiprect= shiprect.move(speed)
+        ship.rect= ship.rect.move(speed)
     
     #meteor collision
-    if shiprect.colliderect(meteorrect):
-        shiprect.left = width/2
-        shiprect.top = height/2
+    if ship.rect.colliderect(meteorrect):
+        ship.rect.left = width/2
+        ship.rect.top = height/2
         speed= [0,0]
-    if shiprect.colliderect(meteorrect2):
-        shiprect.left = width/2
-        shiprect.top = height/2
+    if ship.rect.colliderect(meteorrect2):
+        ship.rect.left = width/2
+        ship.rect.top = height/2
         speed= [0,0]
     ##draw screen
     screen.fill(black)
-    screen.blit(ship,shiprect)
+    ship.draw()
     screen.blit(meteor, meteorrect)
     screen.blit(meteor2, meteorrect2)
     meteor3.draw() 
