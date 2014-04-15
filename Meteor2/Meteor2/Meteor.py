@@ -3,7 +3,7 @@ Created on Apr 14, 2014
 
 @author: Steven
 '''
-import sys, pygame 
+import sys, pygame, ScreenObject
 pygame.init()
 
 size = width, height = 600, 500
@@ -29,6 +29,8 @@ meteor2 = pygame.image.load("Asteroid.png")
 meteorrect2 = meteor.get_rect()
 meteorrect2.left = width/1.5
 meteorrect2.top = height/1.5
+
+meteor3 = ScreenObject.ScreeenObject(screen,"Asteroid.png")
 
 lastTime = pygame.time.get_ticks()
 while 1:
@@ -73,4 +75,5 @@ while 1:
     screen.blit(ship,shiprect)
     screen.blit(meteor, meteorrect)
     screen.blit(meteor2, meteorrect2)
+    meteor3.draw() 
     pygame.display.flip()
