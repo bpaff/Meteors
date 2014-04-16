@@ -17,10 +17,13 @@ ship = ScreenObject.ScreenObject(screen, "ship.png", (width/2,height/2))
 
 ##multiple meteors
 mspeed= [1,1]
-for x in range(0,3):
+for x in range(0,6):
     Asteroid.AsteroidObject(screen)
 
 lastTime = pygame.time.get_ticks()
+
+#mapping = {K_UP: (0,-1), K_RIGHT: (1,0)}
+
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
@@ -35,7 +38,7 @@ while 1:
             speed[0] = speed[0] + 1;
                    
     #meteor collision
-    if Asteroid.AsteroidObject.collision_detect(ship):
+    if Asteroid.collision_detect(ship):
         ship.rect.left = width/2
         ship.rect.top = height/2
         speed= [0,0]
@@ -46,6 +49,6 @@ while 1:
     #draw screen
     screen.fill(white)
     ship.draw()
-    for a in Asteroid.AsteroidObject.asteroids:
+    for a in Asteroid.asteroids:
         a.draw()            
     pygame.display.flip()
