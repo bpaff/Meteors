@@ -38,22 +38,14 @@ class ShipObject(ScreenObject.ScreenObject):
             self.respawn()
             
         self.process_inputs(time, events)
-        self.move(time)        
         super(ShipObject,self).update(time,events)
         
     def respawn(self):
-        self.pos_x = self.screen_width/2
-        self.pos_y = self.screen_height/2
+        self.position_x = self.screen_width/2
+        self.position_y = self.screen_height/2
         self.speed_x = 0
         self.speed_y = 0
-        self.rect.center = (self.pos_x, self.pos_y)
-        self.move_speed = [0,0]
         self.direction = 0        
-        
-    def move(self, time):
-        self.pos_x += time * self.speed_x
-        self.pos_y += time * self.speed_y
-        self.rect.center = (self.pos_x, self.pos_y)
         
     def process_inputs(self, time, events):
         # process key presses

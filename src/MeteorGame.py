@@ -3,7 +3,7 @@ Created on Apr 14, 2014
 
 @author: Steven
 '''
-import sys, pygame, ScreenObject, Asteroid, Bullet, Ship
+import sys, pygame, Asteroid, Ship
 
 class MeteorGame(object):
     
@@ -17,7 +17,7 @@ class MeteorGame(object):
         # instantiate ship        
         Ship.ShipObject(self)
         
-        ##multiple meteors
+        # multiple meteors
         for x in range(0,6):
             Asteroid.AsteroidObject(self)
                 
@@ -27,9 +27,8 @@ class MeteorGame(object):
                 if event.type == pygame.QUIT: 
                     sys.exit()                
             
-            
             screen.fill(white)
-            self.sprites.update(self.clock.tick(50),events)
+            self.sprites.update(self.clock.tick(60),events)
             self.sprites.draw(screen)
             pygame.display.flip()
                 

@@ -15,24 +15,31 @@ class ScreenObject(pygame.sprite.Sprite):
         self.screen_width= game.screen.get_width()
         self.screen_height= game.screen.get_height()
         
-        self.move_speed = [0,0]
-        
+        self.position_x = 0
+        self.position_y = 0
+        self.speed_x = 0
+        self.speed_y = 0
+                
     def update(self,time,events):
         self.update_position(time)
         self.screenwrap()
         super(ScreenObject,self).update()
          
     def screenwrap(self):
-        if self.rect.left>self.screen_width:
-            self.rect.right=0
-        if self.rect.top>self.screen_height:
-            self.rect.bottom=0
-        if self.rect.right<0:
-            self.rect.left=self.screen_width
-        if self.rect.bottom<0:
-            self.rect.top=self.screen_height
-            
-    def update_position(self,time):
-        self.rect= self.rect.move(self.move_speed)
+        # wrap horizontal 
+        if self.position_x > self.screen_width:
+            self.position_x = 0
+        if self.position_x < 0:
+            self.position_x = self.screen_width        
+        # wrap vertical             
+        if self.position_y > self.screen_height:
+            self.position_y = 0
+        if self.position_y < 0:
+            self.position_y = self.screen_height
         
+                        
+    def update_position(self,time):
+        self.position_x += time * self.speed_x
+        self.position_y += time * self.speed_y
+        self.rect.center = (self.position_x, self.position_y)
             
