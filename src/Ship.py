@@ -28,15 +28,13 @@ class ShipObject(ScreenObject.ScreenObject):
         #self.move_speed = [1,1]        
         ships.append(self)
         
-    """def shoot(self, Bullet, screen):
-        bullet = Bullet.BulletObject(screen)
-        bullet.move_speed = self.move_speed"""
-        
     def update(self, time, events):
         collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
         if len(collisions) > 1:
             self.respawn()
-            
+        if self.time_reload > 0:
+            self.time_reload -= time
+                    
         self.process_inputs(time, events)
         super(ShipObject,self).update(time,events)
         
@@ -45,15 +43,12 @@ class ShipObject(ScreenObject.ScreenObject):
         self.position_y = self.screen_height/2
         self.speed_x = 0
         self.speed_y = 0
-        self.direction = 0        
+        self.direction = 0  
+        self.time_reload = 0      
         
     def process_inputs(self, time, events):
         # process key presses
-        for event in events:
-            if event.type == pygame.KEYDOWN: 
-                if event.key == pygame.K_SPACE:
-                    Bullet.BulletObject(self.game)
-                    
+        #    iterate through events                    
         # process key holds
         key=pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
@@ -64,6 +59,8 @@ class ShipObject(ScreenObject.ScreenObject):
             if(self.direction < -360): self.direction += 360                        
         if key[pygame.K_UP]:
             self.accelerate()
+        if key[pygame.K_SPACE]:
+            self.shoot()
             
         # transform the image with to the direction it should be facing and get the new rectangle
         self.image = pygame.transform.rotate(self.image_original, self.direction)
@@ -84,6 +81,9 @@ class ShipObject(ScreenObject.ScreenObject):
         if (radx<0 and not x<-0.5) or (radx>0 and not x>0.5):    
             x+=radx*0.014            
         self.speed_x = x
-        self.speed_y = y        
+        self.speed_y = y 
         
-    
+    def shoot(self):
+        if self.time_reload <= 0:
+            Bullet.BulletObject(self)
+            self.time_reload = 200 # TODO move this value out to a global constant

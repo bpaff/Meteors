@@ -18,8 +18,8 @@ class MeteorGame(object):
         Ship.ShipObject(self)
         
         # multiple meteors
-        for x in range(0,6):
-            Asteroid.AsteroidObject(self)
+        #for x in range(0,6):
+        #    Asteroid.AsteroidObject(self)
                 
         while 1:
             events = pygame.event.get()
@@ -28,7 +28,8 @@ class MeteorGame(object):
                     sys.exit()                
             
             screen.fill(white)
-            self.sprites.update(self.clock.tick(60),events)
+            time_passed = self.clock.tick(60)
+            self.sprites.update(time_passed,events)
             self.sprites.draw(screen)
             pygame.display.flip()
                 
