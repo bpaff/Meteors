@@ -85,5 +85,6 @@ class ShipObject(ScreenObject.ScreenObject):
         
     def shoot(self):
         if self.time_reload <= 0:
-            Bullet.BulletObject(self)
             self.time_reload = 200 # TODO move this value out to a global constant
+            Bullet.BulletObject(self)
+             
