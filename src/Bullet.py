@@ -3,7 +3,7 @@ Created on Apr 18, 2014
 
 @author: Steven
 '''
-import ScreenObject, math, random
+import ScreenObject, math, pygame, Asteroid
 bullets=[]
 
 class BulletObject(ScreenObject.ScreenObject):
@@ -26,6 +26,14 @@ class BulletObject(ScreenObject.ScreenObject):
                 
     def update(self, time, events):
         self.time_life -= time
+        
+        collisions = pygame.sprite.spritecollide(self, self.ship.game.sprites, 0)
+        if len(collisions) > 1:
+            for o in collisions:
+                if isinstance(o,Asteroid.AsteroidObject):
+                    o.kill()
+                    self.kill()    
+    
         if self.time_life > 0:
             super(BulletObject,self).update(time,events)
         else:
