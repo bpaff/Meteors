@@ -11,6 +11,7 @@ def collision_detect(screenObject):
     for a in Asteroid.asteroids:
         if a.rect.colliderect(screenObject.rect):
             ##Destroy ship
+            
             return True
     return False
 
@@ -20,6 +21,9 @@ class ShipObject(ScreenObject.ScreenObject):
         # Call the parent class constructor
         super(ShipObject, self).__init__(game, "ship.png")
         self.game = game
+        
+        #number of lives per player
+        self.lives =3
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
@@ -44,7 +48,10 @@ class ShipObject(ScreenObject.ScreenObject):
         self.speed_x = 0
         self.speed_y = 0
         self.direction = 0  
-        self.time_reload = 0      
+        self.time_reload = 0  
+        self.lives-=1   
+        if self.lives <= 0:
+            self.game.game_over()
         
     def process_inputs(self, time, events):
         # process key presses

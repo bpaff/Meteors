@@ -6,6 +6,25 @@ Created on Apr 14, 2014
 import sys, pygame, Asteroid, Ship
 
 class MeteorGame(object):
+    over = False
+    def game_over(self, win):
+        msg = "You Win"
+        if(not win):
+            msg = "You Lose"
+            
+        MeteorGame.over = True
+        font = pygame.font.SysFont(None, 30)
+        gameover = font.render(msg, 1,(255,255,0))
+        screen.blit(gameover,(100,100))
+        
+        
+    
+    def display_lives(self):
+        self.lives = Ship.ships[0].lives
+        font = pygame.font.SysFont(None,20)
+        lifes = font.render("Lives: " + str(self.lives), 1, (0,0,0))
+        screen.blit(lifes,(10,10))
+        
     
     def main(self, screen):
         self.screen = screen
@@ -17,6 +36,8 @@ class MeteorGame(object):
         # instantiate ship        
         Ship.ShipObject(self)
         
+        
+        
         # multiple meteors
         for x in range(0,6):
             Asteroid.AsteroidObject(self)
@@ -27,13 +48,17 @@ class MeteorGame(object):
                 if event.type == pygame.QUIT: 
                     sys.exit()                
 
-            screen.fill(white)
+            
             time_passed = self.clock.tick(60)
-            self.sprites.update(time_passed,events)
-            self.sprites.draw(screen)
-            pygame.display.flip()
+            
+            if not MeteorGame.over:
+                screen.fill(white)
+                self.sprites.update(time_passed,events)
+                self.display_lives()
+                self.sprites.draw(screen)
                 
-    
+            pygame.display.flip()
+        
 if __name__=="__main__":
     pygame.init()
     pygame.display.set_caption("Inf123 - 2to1's Game")

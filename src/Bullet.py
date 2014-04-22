@@ -21,8 +21,8 @@ class BulletObject(ScreenObject.ScreenObject):
         self.speed_x=1.0*math.cos(self.realangle)
         self.speed_y=-1.0*math.sin(self.realangle)
         
-        self.position_x = self.ship.position_x + (self.speed_x * 20)
-        self.position_y = self.ship.position_y + (self.speed_y * 20)
+        self.position_x = self.ship.position_x + (self.speed_x * 30)
+        self.position_y = self.ship.position_y + (self.speed_y * 30)
                 
     def update(self, time, events):
         self.time_life -= time
