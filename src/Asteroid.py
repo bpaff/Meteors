@@ -15,8 +15,15 @@ class AsteroidObject(ScreenObject.ScreenObject):
         #todo get random inital cords along edge of screen
         super(AsteroidObject, self).__init__(game, "Asteroid.png")        
         asteroids.append(self)
+        self.game = game
         
         self.speed_x = random.randint(-100,100) * 0.0001
         self.speed_y = random.randint(-100,100) * 0.0001
+        
+    def kill(self):
+        asteroids.remove(self)
+        super(AsteroidObject,self).kill()
+        if len(asteroids) == 0:
+            self.game.game_over(win=True) 
         
         

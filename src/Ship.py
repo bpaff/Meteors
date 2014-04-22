@@ -23,13 +23,13 @@ class ShipObject(ScreenObject.ScreenObject):
         self.game = game
         
         #number of lives per player
-        self.lives =3
+        self.lives = 3 + 2 # 2 lives are used during first spawn
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
         
         self.respawn()
-        #self.move_speed = [1,1]        
+                
         ships.append(self)
         
     def update(self, time, events):
