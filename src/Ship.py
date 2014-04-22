@@ -51,7 +51,7 @@ class ShipObject(ScreenObject.ScreenObject):
         self.time_reload = 0  
         self.lives-=1   
         if self.lives <= 0:
-            self.game.game_over()
+            self.game.game_over(win=False)
         
     def process_inputs(self, time, events):
         # process key presses
