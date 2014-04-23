@@ -27,19 +27,20 @@ class BulletObject(ScreenObject.ScreenObject):
     def update(self, time, events):
         self.time_life -= time
         
+        if self.time_life > 0:
+            super(BulletObject,self).update(time,events)
+        else:
+            super(BulletObject,self).kill()
+    
+    def collision_detect(self):
+    
         collisions = pygame.sprite.spritecollide(self, self.ship.game.sprites, 0)
         if len(collisions) > 1:
             for o in collisions:
                 if isinstance(o,Asteroid.AsteroidObject):
                     o.kill()
                     self.kill()    
-    
-        if self.time_life > 0:
-            super(BulletObject,self).update(time,events)
-        else:
-            super(BulletObject,self).kill()
-    
-            
+        
             
             
             

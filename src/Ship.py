@@ -23,7 +23,7 @@ class ShipObject(ScreenObject.ScreenObject):
         self.game = game
         
         #number of lives per player
-        self.lives = 3 + 2 # 2 lives are used during first spawn
+        self.lives = 3 + 1 # 1 life is used during first spawn
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
@@ -33,9 +33,6 @@ class ShipObject(ScreenObject.ScreenObject):
         ships.append(self)
         
     def update(self, time, events):
-        collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
-        if len(collisions) > 1:
-            self.respawn()
         if self.time_reload > 0:
             self.time_reload -= time
                     
@@ -94,4 +91,9 @@ class ShipObject(ScreenObject.ScreenObject):
         if self.time_reload <= 0:
             self.time_reload = 200 # TODO move this value out to a global constant
             Bullet.BulletObject(self)
-             
+            
+    def collision_detect(self):
+        collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
+        if len(collisions) > 1:
+            self.respawn()
+        

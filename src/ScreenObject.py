@@ -1,6 +1,10 @@
 
 import pygame 
 
+def collision_detect_all(screenObjects):
+    for s in screenObjects:
+        s.collision_detect()
+
 class ScreenObject(pygame.sprite.Sprite):
     
     img_path = "../images/"
@@ -40,4 +44,7 @@ class ScreenObject(pygame.sprite.Sprite):
         self.position_x += time * self.speed_x
         self.position_y += time * self.speed_y
         self.rect.center = (self.position_x, self.position_y)
+        
+    def collision_detect(self):
+        pass
             
