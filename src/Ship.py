@@ -3,17 +3,9 @@ Created on Apr 18, 2014
 
 @author: Steven
 '''
-import ScreenObject, Asteroid, Bullet, pygame, math
+import ScreenObject, Bullet, pygame, math
 
 ships =[] ##for when we have more ships
-
-def collision_detect(screenObject):
-    for a in Asteroid.asteroids:
-        if a.rect.colliderect(screenObject.rect):
-            ##Destroy ship
-            
-            return True
-    return False
 
 class ShipObject(ScreenObject.ScreenObject):
     

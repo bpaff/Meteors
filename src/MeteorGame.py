@@ -45,7 +45,6 @@ class MeteorGame(object):
             for event in events:
                 if event.type == pygame.QUIT: 
                     sys.exit()                
-
             
             time_passed = self.clock.tick(60)
             
