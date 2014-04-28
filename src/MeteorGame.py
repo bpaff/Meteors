@@ -14,7 +14,7 @@ class MeteorGame(object):
             
         MeteorGame.over = True
         font = pygame.font.SysFont(None, 30)
-        gameover = font.render(msg, 1,(255,255,0))
+        gameover = font.render(msg, 1,(255,0,0))
         screen.blit(gameover,(100,100))
         
         
@@ -48,6 +48,7 @@ class MeteorGame(object):
             
             time_passed = self.clock.tick(60)
             
+            self.display_lives()
             if not MeteorGame.over:
                 screen.fill(white)
                 self.sprites.update(time_passed,events)
