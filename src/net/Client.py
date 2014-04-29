@@ -24,7 +24,7 @@ class Client(Handler):
                 
                 
     def send(self, msg):
-        print msg
+        ScreenObject.set_screenState(msg)
         ##send stuff back to the server
             
         
@@ -41,14 +41,14 @@ class Client(Handler):
         thread = Thread(target=self.periodic_poll)
         thread.daemon = True  # die when the main thread dies 
         thread.start()
-        
-        while 1:
-            mytxt = sys.stdin.readline().rstrip()
-            #client.do_send({'speak': myname, 'txt': mytxt})
-            if mytxt =="quit":
-            ##client.do_send({'speak': myname, 'txt': "client has left"})
-                self.on_close()
-                break
-            else:
-            ##client.do_send({'speak': myname, 'txt': mytxt})
-    
+'''        
+while 1:
+mytxt = sys.stdin.readline().rstrip()
+#client.do_send({'speak': myname, 'txt': mytxt})
+if mytxt =="quit":
+##client.do_send({'speak': myname, 'txt': "client has left"})
+    self.on_close()
+    break
+else:
+##client.do_send({'speak': myname, 'txt': mytxt})
+'''

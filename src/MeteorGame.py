@@ -35,7 +35,6 @@ class MeteorGame(object):
         
         ##connect to game server
         client = Client()
-        client.periodic_poll()
         client.run()
         
         # instantiate ship        
@@ -60,6 +59,7 @@ class MeteorGame(object):
                 self.display_lives()
                 ScreenObject.collision_detect_all(self.sprites)
                 self.sprites.draw(screen)
+                client.send(ScreenObject.get_screenState())
                 
             pygame.display.flip()
         
