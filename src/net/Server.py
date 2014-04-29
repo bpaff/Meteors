@@ -5,7 +5,8 @@ import Network
 handlers = []
  
 class MyHandler(Handler):
-     
+    
+    
     def on_open(self):
         self.userName = "John Doe"
         handlers.append(self)
