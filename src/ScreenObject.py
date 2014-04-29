@@ -4,20 +4,56 @@ import uuid
 
 screenObjs ={}
 
+
 def collision_detect_all(screenObjects):
     for s in screenObjects:
         s.collision_detect()
+    
+## get current screen state    
+def get_screenState():
+    screenstate ={}
+    ##all screen objects
+    for x in screenObjs:
+        ##for every object
+        
+        obj = screenObjs[x]
+        if obj.remote:
+            continue
+        vals = {}
+        ##map object with its position and speed values
+        vals[obj] = {"position_x": obj.position_x,"position_y": obj.position_y, "speed_x":obj.speed_x,"speed_y":obj.speed_y }
+        screenstate[x] = vals
+    return screenstate
 
+##set new screen state values
+def set_screenState(screenstate):
+    ##get all objects and set new position and speed
+    for x in screenstate:
+        obj = screenObjs[x]
+        val = screenstate[x]
+        obj.position_x = val["position_x"]
+        obj.position_y= val["position_y"]
+        obj.speed_x = val["speed_x"]
+        obj.speed_y = val["speed_y"]
+            
+        
+        
 class ScreenObject(pygame.sprite.Sprite):
     
     img_path = "../images/"
         
-    def __init__(self,game,img_name):
+    def __init__(self,game,img_name,id=None):
         
         super(ScreenObject,self).__init__(game.sprites)
         
         ##gives each object a unique ID and stores it in a dictionary mapped to its object
-        self.ID = uuid.uuid4()
+        if id==None:
+            self.ID = uuid.uuid4()
+            remote = False
+        else:
+            self.ID = id
+            remote = True;
+            
         screenObjs[self.ID] = self
         
         self.image = pygame.image.load(self.img_path + img_name)
@@ -30,6 +66,7 @@ class ScreenObject(pygame.sprite.Sprite):
         self.position_y = 0
         self.speed_x = 0
         self.speed_y = 0
+    
                 
     def update(self,time,events):
         self.update_position(time)

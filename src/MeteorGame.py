@@ -3,7 +3,7 @@ Created on Apr 14, 2014
 
 @author: Steven
 '''
-import sys, pygame, Asteroid, Ship, ScreenObject
+import sys, pygame, Asteroid, Ship, ScreenObject, Client
 
 class MeteorGame(object):
     over = False
@@ -32,6 +32,11 @@ class MeteorGame(object):
         self.clock=pygame.time.Clock()
         
         white = 255,255,255
+        
+        ##connect to game server
+        client = Client()
+        client.periodic_poll()
+        client.run()
         
         # instantiate ship        
         Ship.ShipObject(self)
