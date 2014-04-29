@@ -29,6 +29,6 @@ class Server:
         while 1:
             poll(timeout=0.05) # in seconds
 
-# Uncomment to run the server            
-#server = Server()
-#server.loop()       
+#Uncomment to run the server            
+server = Server()
+server.loop()       

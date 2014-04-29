@@ -16,6 +16,7 @@ class ScreenObject(pygame.sprite.Sprite):
         
         super(ScreenObject,self).__init__(game.sprites)
         
+        ##gives each object a unique ID and stores it in a dictionary mapped to its object
         self.ID = uuid.uuid4()
         screenObjs[self.ID] = self
         
