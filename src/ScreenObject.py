@@ -2,6 +2,7 @@
 import pygame 
 import uuid
 
+screenObjs ={}
 
 def collision_detect_all(screenObjects):
     for s in screenObjects:
@@ -16,6 +17,7 @@ class ScreenObject(pygame.sprite.Sprite):
         super(ScreenObject,self).__init__(game.sprites)
         
         self.ID = uuid.uuid4()
+        screenObjs[self.ID] = self
         
         self.image = pygame.image.load(self.img_path + img_name)
         self.rect = self.image.get_rect()
