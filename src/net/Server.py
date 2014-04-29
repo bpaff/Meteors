@@ -2,34 +2,32 @@ from Network import Listener, Handler, poll
 import sys
 import Network
 
-handlers = []
+clients = []
  
 class MyHandler(Handler):
-    
-    
+        
     def on_open(self):
-        self.userName = "John Doe"
-        handlers.append(self)
-         
+        # capture reference to the connected client
+        clients.append(self)
+        
     def on_close(self):
-        self.on_msg({'leave': self.userName})
-        handlers.remove(self)
-     
+        clients.remove(self)
+        # destroy all objects which belong to that client
+        # msg all other clients about new object state 
+    
     def on_msg(self, msg):
-        if msg.has_key('join'):
-            self.userName = msg['join']
-        for h in handlers:
-            if h != self:
-                h.do_send(msg)
-
+        # send msg to all other clients
+        for c in clients:
+            if c != self:
+                c.do_send(msg)
 
 class Server:
     def run(self):
         port = 8888
         s = Listener(port, MyHandler)
         while 1:
-            poll(timeout=0.05) # in seconds
+            poll(timeout=0.01) # in seconds
 
-#Uncomment to run the server            
-server = Server()
-server.loop()       
+# Uncomment to run the server            
+#server = Server()
+#server.run()       
