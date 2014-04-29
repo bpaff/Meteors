@@ -34,7 +34,7 @@ class MeteorGame(object):
         white = 255,255,255
         
         ##connect to game server
-        client = Client()
+        client = Client.Client("localhost", 8888)
         client.run()
         
         # instantiate ship        

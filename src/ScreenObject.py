@@ -19,18 +19,20 @@ def get_screenState():
         obj = screenObjs[x]
         if obj.remote:
             continue
-        vals = {}
+        
         ##map object with its position and speed values
-        vals[obj] = {"position_x": obj.position_x,"position_y": obj.position_y, "speed_x":obj.speed_x,"speed_y":obj.speed_y }
+        vals = {"position_x": obj.position_x,"position_y": obj.position_y, "speed_x":obj.speed_x,"speed_y":obj.speed_y }
         screenstate[x] = vals
     return screenstate
 
 ##set new screen state values
 def set_screenState(screenstate):
+    
     ##get all objects and set new position and speed
     for x in screenstate:
         obj = screenObjs[x]
         val = screenstate[x]
+       
         obj.position_x = val["position_x"]
         obj.position_y= val["position_y"]
         obj.speed_x = val["speed_x"]
@@ -49,10 +51,10 @@ class ScreenObject(pygame.sprite.Sprite):
         ##gives each object a unique ID and stores it in a dictionary mapped to its object
         if id==None:
             self.ID = uuid.uuid4()
-            remote = False
+            self.remote = False
         else:
             self.ID = id
-            remote = True;
+            self.remote = True;
             
         screenObjs[self.ID] = self
         

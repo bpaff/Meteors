@@ -25,9 +25,10 @@ class Server:
     def run(self):
         port = 8888
         s = Listener(port, MyHandler)
+        print"running"
         while 1:
             poll(timeout=0.01) # in seconds
 
 # Uncomment to run the server            
-#server = Server()
-#server.run()       
+server = Server()
+server.run()       
