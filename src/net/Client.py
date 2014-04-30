@@ -12,19 +12,12 @@ class Client(Handler):
         
     
     def on_msg(self, msg):
-        ##keys from dictionary, correspond to objects that have changed
-        for x in msg:
-            ##get the object from key 'x'
-            obj = ScreenObject.screenObjs.get(x)
-            ##Dictionary of property names and values
-            vals = msg[x]
-            for v in vals:
-                ##loading new values from msg dictionary
-                obj[v]= vals[v]  
+        ScreenObject.set_screenState(msg)
                 
                 
     def send(self, msg):
-        ScreenObject.set_screenState(msg)
+        self.do_send(msg)
+        #ScreenObject.set_screenState(msg)
         ##send stuff back to the server
             
         
