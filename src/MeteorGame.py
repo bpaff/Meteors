@@ -5,6 +5,7 @@ Created on Apr 14, 2014
 '''
 import sys, pygame, Asteroid, Ship, ScreenObject, Client
 
+game = None
 class MeteorGame(object):
     over = False
     def game_over(self, win):
@@ -27,6 +28,9 @@ class MeteorGame(object):
         
     
     def main(self, screen):
+        global game
+        game = self  
+        
         self.screen = screen
         self.sprites=pygame.sprite.Group()
         self.clock=pygame.time.Clock()
@@ -41,7 +45,7 @@ class MeteorGame(object):
         Ship.ShipObject(self)
         
         # multiple meteors
-        for x in range(0,6):
+        for x in range(0,1):
             Asteroid.AsteroidObject(self)
                 
         while 1:

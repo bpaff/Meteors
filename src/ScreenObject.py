@@ -3,7 +3,7 @@ import pygame
 import uuid
 
 screenObjs ={}
-
+screenObjs_killed = []
 
 def collision_detect_all(screenObjects):
     for s in screenObjects:
@@ -12,33 +12,48 @@ def collision_detect_all(screenObjects):
 ## get current screen state    
 def get_screenState():
     screenstate ={}
-    ##all screen objects
+    
+    # report killed objects
+    
+    ## get state for existing screen objects
     for x in screenObjs:
-        ##for every object
-        
+        ##for every object        
         obj = screenObjs[x]
+        
+        #if it's a remote object don't worry about sending it's state 
         if obj.remote:
             continue
         
         ##map object with its position and speed values
-        vals = {"position_x": obj.position_x,"position_y": obj.position_y, "speed_x":obj.speed_x,"speed_y":obj.speed_y }
-        screenstate[x] = vals
+        
+        screenstate[x] = {
+            "position_x": obj.position_x,
+            "position_y": obj.position_y, 
+            "speed_x":obj.speed_x,
+            "speed_y":obj.speed_y,
+            "type": obj.__class__.__name__,
+            "is_alive": True
+        }
+         
     return screenstate
 
 ##set new screen state values
 def set_screenState(screenstate):
     
+    #print screenstate
     ##get all objects and set new position and speed
     for x in screenstate:
-        obj = screenObjs[x]
         val = screenstate[x]
-       
+        if x not in screenObjs.keys():
+            pass
+            #have game make new object
+        
+        obj = screenObjs[x]
+               
         obj.position_x = val["position_x"]
         obj.position_y= val["position_y"]
         obj.speed_x = val["speed_x"]
         obj.speed_y = val["speed_y"]
-            
-        
         
 class ScreenObject(pygame.sprite.Sprite):
     
@@ -56,6 +71,7 @@ class ScreenObject(pygame.sprite.Sprite):
             self.ID = id
             self.remote = True;
             
+        global screenObjs
         screenObjs[self.ID] = self
         
         self.image = pygame.image.load(self.img_path + img_name)

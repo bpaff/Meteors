@@ -7,10 +7,12 @@ clients = []
 class MyHandler(Handler):
         
     def on_open(self):
+        print 'client connected'
         # capture reference to the connected client
         clients.append(self)
         
     def on_close(self):
+        print 'client left'
         clients.remove(self)
         # destroy all objects which belong to that client
         # msg all other clients about new object state 
