@@ -34,6 +34,7 @@ def get_screenState():
             "type": obj.__class__.__name__,
             "is_alive": True
         }
+        screenstate[x] = "test"
          
     return screenstate
 
@@ -65,7 +66,7 @@ class ScreenObject(pygame.sprite.Sprite):
         
         ##gives each object a unique ID and stores it in a dictionary mapped to its object
         if id==None:
-            self.ID = uuid.uuid4()
+            self.ID = uuid.uuid4().__str__()
             self.remote = False
         else:
             self.ID = id
