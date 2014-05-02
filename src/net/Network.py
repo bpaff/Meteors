@@ -2,7 +2,7 @@ import asynchat
 import asyncore
 import json
 import socket
-
+from time import sleep
 
 class Handler(asynchat.async_chat):
     
@@ -33,10 +33,11 @@ class Handler(asynchat.async_chat):
         
     # API you can use
     def do_send(self, msg):
-        #msg = {'hello': 'there'}
-        print(msg)
-        self.push(json.dumps(list(msg)) + '\0')
-        return
+        #print(msg)
+#         print(type(msg))
+#         if type(msg) != 'buffer':
+            self.push(json.dumps(list(msg)) + '\0')
+#             return
         
     def do_close(self):
         self.handle_close()  # will call self.on_close
