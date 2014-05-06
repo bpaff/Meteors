@@ -33,11 +33,7 @@ class Handler(asynchat.async_chat):
         
     # API you can use
     def do_send(self, msg):
-        #print(msg)
-#         print(type(msg))
-#         if type(msg) != 'buffer':
-            self.push(json.dumps(list(msg)) + '\0')
-#             return
+        self.push(json.dumps(msg) + '\0')
         
     def do_close(self):
         self.handle_close()  # will call self.on_close

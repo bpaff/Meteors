@@ -13,12 +13,7 @@ class Client(Handler):
     
     def on_msg(self, msg):
         ScreenObject.set_screenState(msg)
-                
-                
-    def send(self, msg):
-        self.do_send(msg)
-        #ScreenObject.set_screenState(msg)
-        ##send stuff back to the server
+
             
         
 
