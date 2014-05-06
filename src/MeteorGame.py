@@ -59,10 +59,10 @@ class MeteorGame(object):
             if not MeteorGame.over:
                 screen.fill(white)
                 self.sprites.update(time_passed,events)
-                self.display_lives()
+                self.display_lives() 
                 ScreenObject.collision_detect_all(self.sprites)
                 self.sprites.draw(screen)
-                pygame.time.wait(22)
+                pygame.time.wait(25)
                 client.do_send(ScreenObject.get_screenState())
                 
             pygame.display.flip()

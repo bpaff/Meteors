@@ -21,7 +21,6 @@ class MyHandler(Handler):
         # send msg to all other clients
         for c in clients:
             if c != self:
-                print 'sending msg'
                 c.do_send(msg)
 
 class Server:

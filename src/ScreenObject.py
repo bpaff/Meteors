@@ -40,21 +40,21 @@ def get_screenState():
 
 ##set new screen state values
 def set_screenState(screenstate):
-    
     #print screenstate
+    
     ##get all objects and set new position and speed
     for x in screenstate:
         val = screenstate[x]
         if x not in screenObjs.keys():
             pass
             #have game make new object
-        
-        obj = screenObjs[x]
-               
-        obj.position_x = val["position_x"]
-        obj.position_y= val["position_y"]
-        obj.speed_x = val["speed_x"]
-        obj.speed_y = val["speed_y"]
+        else:
+            obj = screenObjs[x]
+                   
+            obj.position_x = val["position_x"]
+            obj.position_y= val["position_y"]
+            obj.speed_x = val["speed_x"]
+            obj.speed_y = val["speed_y"]
         
 class ScreenObject(pygame.sprite.Sprite):
     
