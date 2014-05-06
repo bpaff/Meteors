@@ -62,7 +62,7 @@ class MeteorGame(object):
                 self.display_lives()
                 ScreenObject.collision_detect_all(self.sprites)
                 self.sprites.draw(screen)
-                #pygame.time.wait(22)
+                pygame.time.wait(22)
                 client.do_send(ScreenObject.get_screenState())
                 
             pygame.display.flip()
