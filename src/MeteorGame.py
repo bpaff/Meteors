@@ -16,7 +16,7 @@ class MeteorGame(object):
         MeteorGame.over = True
         font = pygame.font.SysFont(None, 30)
         gameover = font.render(msg, 1,(255,0,0))
-        screen.blit(gameover,(100,100))       
+        screen.blit(gameover,(100,100))        
         
     
     def display_lives(self):
