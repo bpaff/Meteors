@@ -28,7 +28,7 @@ class ShipObject(ScreenObject.ScreenObject):
     
     
     def update(self, time, events):
-        if self.invis_time==100:
+        if self.invis_time==200:
             self.invis = False
             self.invis_time=0
         if self.time_reload > 0:
