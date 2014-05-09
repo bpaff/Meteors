@@ -11,9 +11,9 @@ class ShipObject(ScreenObject.ScreenObject):
     
     def __init__(self, game):
         # Call the parent class constructor
-        super(ShipObject, self).__init__(game, "ship.png")
+        super(ShipObject, self).__init__(game, "ship2.jpg")
         self.game = game
-        
+        self.invis = False
         #number of lives per player
         self.lives = 3 + 1 # 1 life is used during first spawn
         
@@ -24,12 +24,22 @@ class ShipObject(ScreenObject.ScreenObject):
                 
         ships.append(self)
         
+        self.invince =0
+    
+    
     def update(self, time, events):
+        if self.invis_time==100:
+            self.invis = False
+            self.invis_time=0
         if self.time_reload > 0:
             self.time_reload -= time
+            
                     
         self.process_inputs(time, events)
         super(ShipObject,self).update(time,events)
+        
+
+
         
     def respawn(self):
         self.position_x = self.screen_width/2
@@ -39,6 +49,9 @@ class ShipObject(ScreenObject.ScreenObject):
         self.direction = 0  
         self.time_reload = 0  
         self.lives-=1   
+        self.invis = True
+        
+        self.invis_time=0
         if self.lives <= 0:
             self.game.game_over(win=False)
         
@@ -59,6 +72,10 @@ class ShipObject(ScreenObject.ScreenObject):
             self.shoot()
             
         # transform the image with to the direction it should be facing and get the new rectangle
+        if self.invis:
+            self.image_original = pygame.image.load(ScreenObject.img_path+"ship3.jpg")
+        else:
+            self.image_original = pygame.image.load(ScreenObject.img_path+"ship2.jpg")
         self.image = pygame.transform.rotate(self.image_original, self.direction)
         self.rect = self.image.get_rect(center=self.rect.center)
         
@@ -85,7 +102,11 @@ class ShipObject(ScreenObject.ScreenObject):
             Bullet.BulletObject(self)
             
     def collision_detect(self):
-        collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
-        if len(collisions) > 1:
-            self.respawn()
+        if self.invis:
+            self.invis_time+=1
+            pass
+        else:
+            collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
+            if len(collisions) > 1:
+                self.respawn()
         

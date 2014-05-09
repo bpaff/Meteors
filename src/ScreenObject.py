@@ -56,13 +56,15 @@ def set_screenState(screenstate):
             obj.position_y= val["position_y"]
             obj.speed_x = val["speed_x"]
             obj.speed_y = val["speed_y"]
+            
+img_path = "../images/"
         
 class ScreenObject(pygame.sprite.Sprite):
     
-    img_path = "../images/"
+    
         
     def __init__(self,game,img_name,id=None):
-        
+        global img_path
         super(ScreenObject,self).__init__(game.sprites)
         
         ##gives each object a unique ID and stores it in a dictionary mapped to its object
@@ -76,7 +78,7 @@ class ScreenObject(pygame.sprite.Sprite):
         global screenObjs
         screenObjs[self.ID] = self
         
-        self.image = pygame.image.load(self.img_path + img_name)
+        self.image = pygame.image.load(img_path + img_name)
         self.rect = self.image.get_rect()
         
         self.screen_width= game.screen.get_width()
@@ -86,6 +88,8 @@ class ScreenObject(pygame.sprite.Sprite):
         self.position_y = 0
         self.speed_x = 0
         self.speed_y = 0
+        
+       
     
                 
     def update(self,time,events):

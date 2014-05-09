@@ -9,7 +9,7 @@ bullets=[]
 class BulletObject(ScreenObject.ScreenObject):
     
     def __init__(self, ship):
-        super(BulletObject, self).__init__(ship.game, "bullet.png")
+        super(BulletObject, self).__init__(ship.game, "fireball.png")
         self.ship = ship
         self.time_life = 250.0
         

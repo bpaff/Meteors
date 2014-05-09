@@ -15,14 +15,15 @@ class MeteorGame(object):
         MeteorGame.over = True
         font = pygame.font.SysFont(None, 30)
         gameover = font.render(msg, 1,(255,0,0))
-        screen.blit(gameover,(100,100))       
-        
+        screen.blit(gameover,(100,100))
     
     def display_lives(self):
         self.lives = Ship.ships[0].lives
         font = pygame.font.SysFont(None,20)
         lifes = font.render("Lives: " + str(self.lives), 1, (0,0,0))
         screen.blit(lifes,(10,10))
+    
+        
         
     
     def main(self, screen):
@@ -44,6 +45,8 @@ class MeteorGame(object):
         # multiple meteors
         for x in range(0,1):
             Asteroid.AsteroidObject(self)
+            
+
                 
         while 1:
             events = pygame.event.get()
@@ -58,7 +61,9 @@ class MeteorGame(object):
                 screen.fill(white)
                 self.sprites.update(time_passed,events)
                 self.display_lives() 
+                
                 ScreenObject.collision_detect_all(self.sprites)
+               
                 self.sprites.draw(screen)
                 
             pygame.display.flip()
