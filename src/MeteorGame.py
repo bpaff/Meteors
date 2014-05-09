@@ -4,9 +4,17 @@ Created on Apr 14, 2014
 @author: Steven
 '''
 import sys, pygame, Asteroid, Ship, ScreenObject, Client, Factory
+import ScoreKeeper
 
 class MeteorGame(object):
     over = False
+    
+    def __init__(self):
+        #instantiate ScoreKeeper
+        self.score = ScoreKeeper.ScoreKeeper(1)
+        #NOTE: not using yet, use this when lives = 0 and players chase each other
+        self.continue_play = False
+    
     def game_over(self, win):
         msg = "You Win"
         if(not win):
@@ -20,10 +28,13 @@ class MeteorGame(object):
     def display_lives(self):
         self.lives = Ship.ships[0].lives
         font = pygame.font.SysFont(None,20)
-        lifes = font.render("Lives: " + str(self.lives), 1, (0,0,0))
+        lifes = font.render("Lives:  " + str(self.lives), 1, (0,0,0))
         screen.blit(lifes,(10,10))
     
-        
+    def display_score(self):
+        font = pygame.font.SysFont(None, 20)
+        player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
+        screen.blit(player_score, (10, 20))   
         
     
     def main(self, screen):
@@ -42,6 +53,7 @@ class MeteorGame(object):
         # instantiate ship        
         Ship.ShipObject(self)
         
+        
         # multiple meteors
         for x in range(0,1):
             Asteroid.AsteroidObject(self)
@@ -57,11 +69,12 @@ class MeteorGame(object):
             time_passed = self.clock.tick(60)
             
             self.display_lives()
+            self.display_score()
             if not MeteorGame.over:
                 screen.fill(white)
                 self.sprites.update(time_passed,events)
                 self.display_lives() 
-                
+                self.display_score()
                 ScreenObject.collision_detect_all(self.sprites)
                
                 self.sprites.draw(screen)

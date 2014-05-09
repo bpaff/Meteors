@@ -15,7 +15,16 @@ class ScoreKeeper(object):
     def _run(self):
         self.is_active = False
         self.start()
-        #make function call to calculate
+        #calculating score
+        self.increment_score()
+    
+    def increment_score(self):
+        #1   pt/sec
+        self.score += 1
+        #10  pt/asteroid
+        self.score += 10
+        #100 pt/ship
+        self.score += 100
     
     def start(self):
         if not self.is_active:
@@ -27,3 +36,5 @@ class ScoreKeeper(object):
         self._timer.cancel()
         self.is_active = False
     
+    def get_score(self):
+        return self.score
