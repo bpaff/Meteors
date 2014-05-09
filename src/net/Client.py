@@ -22,8 +22,10 @@ class Client(Handler):
 
     def periodic_poll(self):
         while 1:
-            poll()
-            sleep(0.05)  # seconds
+            self.do_send(ScreenObject.get_screenState())
+            for i in range(1,20):
+                poll()
+                sleep(0.005)  # seconds
             
     def run(self):                         
         thread = Thread(target=self.periodic_poll)

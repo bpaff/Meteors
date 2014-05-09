@@ -29,7 +29,7 @@ class Server:
         s = Listener(port, MyHandler)
         print"running"
         while 1:
-            poll(timeout=0.01) # in seconds
+            poll(timeout=0.001) # in seconds
 
 # Uncomment to run the server            
 server = Server()

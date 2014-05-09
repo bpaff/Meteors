@@ -1,6 +1,7 @@
 
 import pygame 
 import uuid
+from Factory import MakeScreenObject
 
 screenObjs ={}
 screenObjs_killed = []
@@ -34,7 +35,6 @@ def get_screenState():
             "type": obj.__class__.__name__,
             "is_alive": True
         }
-        screenstate[x] = "test"
          
     return screenstate
 
@@ -43,13 +43,14 @@ def set_screenState(screenstate):
     #print screenstate
     
     ##get all objects and set new position and speed
-    for x in screenstate:
-        val = screenstate[x]
-        if x not in screenObjs.keys():
+    for id in screenstate:
+        val = screenstate[id]
+        if id not in screenObjs.keys():
+            MakeScreenObject(val["type"],id)
             pass
-            #have game make new object
+            
         else:
-            obj = screenObjs[x]
+            obj = screenObjs[id]
                    
             obj.position_x = val["position_x"]
             obj.position_y= val["position_y"]

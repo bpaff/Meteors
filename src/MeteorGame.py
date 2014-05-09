@@ -3,9 +3,8 @@ Created on Apr 14, 2014
 
 @author: Steven
 '''
-import sys, pygame, Asteroid, Ship, ScreenObject, Client
+import sys, pygame, Asteroid, Ship, ScreenObject, Client, Factory
 
-game = None
 class MeteorGame(object):
     over = False
     def game_over(self, win):
@@ -27,8 +26,7 @@ class MeteorGame(object):
         
     
     def main(self, screen):
-        global game
-        game = self  
+        Factory.game = self
         
         self.screen = screen
         self.sprites=pygame.sprite.Group()
@@ -62,8 +60,6 @@ class MeteorGame(object):
                 self.display_lives() 
                 ScreenObject.collision_detect_all(self.sprites)
                 self.sprites.draw(screen)
-                pygame.time.wait(25)
-                client.do_send(ScreenObject.get_screenState())
                 
             pygame.display.flip()
         

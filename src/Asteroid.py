@@ -1,5 +1,3 @@
-
-
 import ScreenObject, random
 asteroids = []
 
@@ -11,9 +9,9 @@ def collision_detect(screenObject):
 
 class AsteroidObject(ScreenObject.ScreenObject):
         
-    def __init__(self, game):
+    def __init__(self, game, id=None):
         #todo get random inital cords along edge of screen
-        super(AsteroidObject, self).__init__(game, "Asteroid.png")        
+        super(AsteroidObject, self).__init__(game, "Asteroid.png", id)        
         asteroids.append(self)
         self.game = game
         
