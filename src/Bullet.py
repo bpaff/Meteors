@@ -35,11 +35,15 @@ class BulletObject(ScreenObject.ScreenObject):
     def collision_detect(self):
     
         collisions = pygame.sprite.spritecollide(self, self.ship.game.sprites, 0)
+        score = 0
         if len(collisions) > 1:
             for o in collisions:
+                #TODO: ability to kill other objects
+                score += 10
                 if isinstance(o,Asteroid.AsteroidObject):
                     o.kill()
-                    self.kill()    
+                    self.kill()   
+        return score 
         
             
             

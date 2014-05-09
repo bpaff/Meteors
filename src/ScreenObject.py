@@ -7,8 +7,10 @@ screenObjs ={}
 screenObjs_killed = []
 
 def collision_detect_all(screenObjects):
+    score = 0
     for s in screenObjects:
-        s.collision_detect()
+        score += s.collision_detect()
+    return score
     
 ## get current screen state    
 def get_screenState():
@@ -114,5 +116,5 @@ class ScreenObject(pygame.sprite.Sprite):
         self.rect.center = (self.position_x, self.position_y)
         
     def collision_detect(self):
-        pass
+        return 0
             

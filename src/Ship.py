@@ -109,4 +109,5 @@ class ShipObject(ScreenObject.ScreenObject):
             collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
             if len(collisions) > 1:
                 self.respawn()
+        return 0
         

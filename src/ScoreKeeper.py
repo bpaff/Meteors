@@ -22,9 +22,9 @@ class ScoreKeeper(object):
         #1   pt/sec
         self.score += 1
         #10  pt/asteroid
-        self.score += 10
+        #self.score += 10
         #100 pt/ship
-        self.score += 100
+        #self.score += 100
     
     def start(self):
         if not self.is_active:
