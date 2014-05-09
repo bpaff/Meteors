@@ -31,6 +31,17 @@ class MeteorGame(object):
         font = pygame.font.SysFont(None,20)
         lifes = font.render("Lives:  " + str(self.lives), 1, (0,0,0))
         screen.blit(lifes,(10,10))
+        
+        
+    def create_meteors(self, time):
+        
+        if time/5000 > self.asteroid_spawn_counter:
+            self.asteroid_spawn_counter += 1
+            spawn = time/10000
+            x=0
+            while x!=spawn:
+                Asteroid.AsteroidObject(self)
+                x+=1
     
     def display_score(self):
         font = pygame.font.SysFont(None, 20)
@@ -40,7 +51,7 @@ class MeteorGame(object):
     
     def main(self, screen):
         Factory.game = self
-        
+        self.asteroid_spawn_counter = 0
         self.screen = screen
         self.sprites=pygame.sprite.Group()
         self.clock=pygame.time.Clock()
@@ -73,6 +84,7 @@ class MeteorGame(object):
             self.display_score()
             if not MeteorGame.over:
                 screen.fill(white)
+                self.create_meteors(pygame.time.get_ticks())
                 self.sprites.update(time_passed,events)
                 self.display_lives()
                 self.player_score += ScreenObject.collision_detect_all(self.sprites)
