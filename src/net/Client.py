@@ -2,6 +2,55 @@ from Network import Handler, poll
 import sys, json, ScreenObject
 from threading import Thread
 from time import sleep
+from Factory import MakeScreenObject
+
+
+## get current screen state    
+def get_screenState():
+    screenstate ={}
+    
+    # report killed objects
+    
+    ## get state for existing screen objects
+    for x in ScreenObject.screenObjs:
+        ##for every object        
+        obj = ScreenObject.screenObjs[x]
+        
+        #if it's a remote object don't worry about sending it's state 
+        if obj.remote:
+            continue
+        
+        ##map object with its position and speed values
+        
+        screenstate[x] = {
+            "position_x": obj.position_x,
+            "position_y": obj.position_y, 
+            "speed_x":obj.speed_x,
+            "speed_y":obj.speed_y,
+            "type": obj.__class__.__name__,
+            "is_alive": True
+        }
+         
+    return screenstate
+
+##set new screen state values
+def set_screenState(screenstate):
+    #print screenstate
+    
+    ##get all objects and set new position and speed
+    for id in screenstate:
+        val = screenstate[id]
+        if id not in ScreenObject.screenObjs.keys():
+            MakeScreenObject(val["type"],id)
+            pass
+            
+        else:
+            obj = ScreenObject.screenObjs[id]
+                   
+            obj.position_x = val["position_x"]
+            obj.position_y= val["position_y"]
+            obj.speed_x = val["speed_x"]
+            obj.speed_y = val["speed_y"]
 
 
 host, port = 'localhost', 8888
@@ -12,7 +61,7 @@ class Client(Handler):
         
     
     def on_msg(self, msg):
-        ScreenObject.set_screenState(msg)
+        set_screenState(msg)
 
             
         
@@ -22,7 +71,7 @@ class Client(Handler):
 
     def periodic_poll(self):
         while 1:
-            self.do_send(ScreenObject.get_screenState())
+            self.do_send(get_screenState())
             for i in range(1,20):
                 poll()
                 sleep(0.005)  # seconds
@@ -31,6 +80,10 @@ class Client(Handler):
         thread = Thread(target=self.periodic_poll)
         thread.daemon = True  # die when the main thread dies 
         thread.start()
+
+
+
+
 '''        
 while 1:
 mytxt = sys.stdin.readline().rstrip()

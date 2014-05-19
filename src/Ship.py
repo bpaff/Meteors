@@ -9,9 +9,9 @@ ships =[] ##for when we have more ships
 
 class ShipObject(ScreenObject.ScreenObject):
     
-    def __init__(self, game):
+    def __init__(self, game, id=None):
         # Call the parent class constructor
-        super(ShipObject, self).__init__(game, "ship2.jpg")
+        super(ShipObject, self).__init__(game, "ship2.jpg", id)
         self.game = game
         self.invis = False
         #number of lives per player
