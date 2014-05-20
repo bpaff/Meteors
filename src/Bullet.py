@@ -3,7 +3,7 @@ Created on Apr 18, 2014
 
 @author: Steven
 '''
-import ScreenObject, math, pygame, Asteroid
+import ScreenObject, math, pygame, Asteroid, Ship
 bullets=[]
 
 class BulletObject(ScreenObject.ScreenObject):
@@ -41,8 +41,11 @@ class BulletObject(ScreenObject.ScreenObject):
                 #TODO: ability to kill other objects
                 if isinstance(o,Asteroid.AsteroidObject):
                     score += 10
-                    o.destroy()
-                    self.destroy()
+                if isinstance(o, Ship.ShipObject):
+                    score += 100
+                o.destroy()
+                self.destroy()
+
         return score 
         
             
