@@ -56,25 +56,22 @@ class ShipObject(ScreenObject.ScreenObject):
             self.game.game_over(win=False)
         
     def process_inputs(self, time, events):
-        # Don't process inputs for remote ships
-        if self.remote:
-            return        
-        
         # process key presses
         #    iterate through events                    
         # process key holds
-        key=pygame.key.get_pressed()
-        if key[pygame.K_LEFT]:
-            self.direction+=0.5*time
-            if(self.direction > 360): self.direction -= 360            
-        if key[pygame.K_RIGHT]:
-            self.direction-=0.5*time
-            if(self.direction < -360): self.direction += 360                        
-        if key[pygame.K_UP]:
-            self.accelerate()
-        if key[pygame.K_SPACE]:
-            self.shoot()
-            
+        if not self.remote:
+            key=pygame.key.get_pressed()
+            if key[pygame.K_LEFT]:
+                self.direction+=0.5*time
+                if(self.direction > 360): self.direction -= 360            
+            if key[pygame.K_RIGHT]:
+                self.direction-=0.5*time
+                if(self.direction < -360): self.direction += 360                        
+            if key[pygame.K_UP]:
+                self.accelerate()
+            if key[pygame.K_SPACE]:
+                self.shoot()
+                
         # transform the image with to the direction it should be facing and get the new rectangle
         if self.invis:
             self.image_original = pygame.image.load(ScreenObject.img_path+"ship3.jpg")
