@@ -30,7 +30,7 @@ class BulletObject(ScreenObject.ScreenObject):
         if self.time_life > 0:
             super(BulletObject,self).update(time,events)
         else:
-            super(BulletObject,self).kill()
+            super(BulletObject,self).destroy()
     
     def collision_detect(self):
     
@@ -41,8 +41,8 @@ class BulletObject(ScreenObject.ScreenObject):
                 #TODO: ability to kill other objects
                 if isinstance(o,Asteroid.AsteroidObject):
                     score += 10
-                    o.kill()
-                    self.kill()   
+                    o.destroy()
+                    self.destroy()
         return score 
         
             

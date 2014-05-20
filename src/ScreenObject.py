@@ -41,6 +41,7 @@ class ScreenObject(pygame.sprite.Sprite):
         self.position_y = 0
         self.speed_x = 0
         self.speed_y = 0
+        self.is_alive = True
         
                 
     def update(self,time,events):
@@ -66,4 +67,9 @@ class ScreenObject(pygame.sprite.Sprite):
         
     def collision_detect(self):
         return 0
+    
+    def destroy(self):
+        self.kill()
+        self.is_alive = False
+        
             

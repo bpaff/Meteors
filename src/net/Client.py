@@ -25,14 +25,13 @@ def get_screenState():
             continue
         
         ##map object with its position and speed values
-        
         screenstate[x] = {
             "position_x": obj.position_x,
             "position_y": obj.position_y, 
             "speed_x":obj.speed_x,
             "speed_y":obj.speed_y,
             "type": obj.__class__.__name__,
-            "is_alive": True
+            "is_alive": obj.is_alive
             
         }
         if screenstate[x]["type"]== "ShipObject":
@@ -53,10 +52,11 @@ def set_screenState(screenstate):
         if id not in ScreenObject.screenObjs.keys():
             MakeScreenObject(val["type"],id)
             pass
-            
+        
         else:
             obj = ScreenObject.screenObjs[id]
-                   
+            if obj.is_alive != val["is_alive"]:
+                obj.destroy()
             obj.position_x = val["position_x"]
             obj.position_y= val["position_y"]
             obj.speed_x = val["speed_x"]
