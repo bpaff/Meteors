@@ -59,12 +59,8 @@ class Client(Handler):
     def on_close(self):
         print "Client has Left Game"
         
-    
     def on_msg(self, msg):
         set_screenState(msg)
-
-            
-        
 
 ##client = Client(host, port)
 ##client.do_send({'join': myname})

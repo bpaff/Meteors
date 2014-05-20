@@ -56,6 +56,10 @@ class ShipObject(ScreenObject.ScreenObject):
             self.game.game_over(win=False)
         
     def process_inputs(self, time, events):
+        # Don't process inputs for remote ships
+        if self.remote:
+            return        
+        
         # process key presses
         #    iterate through events                    
         # process key holds
