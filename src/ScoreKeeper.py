@@ -26,6 +26,9 @@ class ScoreKeeper(object):
         #100 pt/ship
         #self.score += 100
     
+    def update_score(self, points):
+        self.score += points
+    
     def start(self):
         if not self.is_active:
             self._timer = Timer(self.time_interval, self._run)

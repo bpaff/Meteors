@@ -39,8 +39,8 @@ class BulletObject(ScreenObject.ScreenObject):
         if len(collisions) > 1:
             for o in collisions:
                 #TODO: ability to kill other objects
-                score += 10
                 if isinstance(o,Asteroid.AsteroidObject):
+                    score += 10
                     o.kill()
                     self.kill()   
         return score 

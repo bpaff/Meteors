@@ -12,7 +12,7 @@ class MeteorGame(object):
     def __init__(self):
         #instantiate ScoreKeeper
         self.score = ScoreKeeper.ScoreKeeper(1)
-        self.player_score = self.score.get_score()
+        #self.player_score = self.score.get_score()
         #NOTE: not using yet, use this when lives = 0 and players chase each other
         self.continue_play = False
     
@@ -80,14 +80,16 @@ class MeteorGame(object):
             
             time_passed = self.clock.tick(60)
             
-            self.display_lives()
-            self.display_score()
+            #self.display_lives()
+            #self.display_score()
             if not MeteorGame.over:
                 screen.fill(white)
                 self.create_meteors(pygame.time.get_ticks())
                 self.sprites.update(time_passed,events)
                 self.display_lives()
-                self.player_score += ScreenObject.collision_detect_all(self.sprites)
+                points = ScreenObject.collision_detect_all(self.sprites)
+                if (points > 0):
+                    self.score.update_score(points)
                 self.display_score()
                 self.sprites.draw(screen)
             else:
