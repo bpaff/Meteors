@@ -41,7 +41,7 @@ class BulletObject(ScreenObject.ScreenObject):
                 #TODO: ability to kill other objects
                 if isinstance(o,Asteroid.AsteroidObject):
                     score += 10
-                if isinstance(o, Ship.ShipObject):
+                elif isinstance(o, Ship.ShipObject):
                     score += 100
                 o.destroy()
                 self.destroy()
