@@ -80,8 +80,6 @@ class MeteorGame(object):
             
             time_passed = self.clock.tick(60)
             
-            #self.display_lives()
-            #self.display_score()
             if not MeteorGame.over:
                 screen.fill(white)
                 self.create_meteors(pygame.time.get_ticks())

@@ -22,9 +22,7 @@ class ScoreKeeper(object):
         #1   pt/sec
         self.score += 1
         #10  pt/asteroid
-        #self.score += 10
         #100 pt/ship
-        #self.score += 100
     
     def update_score(self, points):
         self.score += points
