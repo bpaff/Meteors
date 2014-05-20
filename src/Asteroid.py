@@ -18,9 +18,10 @@ class AsteroidObject(ScreenObject.ScreenObject):
         self.speed_x = random.randint(-100,100) * 0.0001
         self.speed_y = random.randint(-100,100) * 0.0001
         
-    def kill(self):
-        asteroids.remove(self)
-        super(AsteroidObject,self).kill()
+    def destroy(self):
+        if asteroids.__contains__(self):
+            asteroids.remove(self)
+            super(AsteroidObject,self).destroy()
         if len(asteroids) == 0:
             self.game.game_over(win=True) 
         

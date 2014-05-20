@@ -1,6 +1,8 @@
 
 import pygame 
 import uuid
+import threading
+
 
 screenObjs ={}
 screenObjs_killed = []
@@ -13,12 +15,14 @@ def collision_detect_all(screenObjects):
     
             
 img_path = "../images/"
+
         
 class ScreenObject(pygame.sprite.Sprite):
             
     def __init__(self,game,img_name,id=None):
         global img_path
         super(ScreenObject,self).__init__(game.sprites)
+        lock = threading.Lock()
         
         ##gives each object a unique ID and stores it in a dictionary mapped to its object
         if id==None:
@@ -27,9 +31,14 @@ class ScreenObject(pygame.sprite.Sprite):
         else:
             self.ID = id
             self.remote = True;
-            
-        global screenObjs
-        screenObjs[self.ID] = self
+        
+
+        lock.acquire()
+        try:
+            global screenObjs
+            screenObjs[self.ID] = self
+        finally:
+            lock.release()
         
         self.image = pygame.image.load(img_path + img_name)
         self.rect = self.image.get_rect()
