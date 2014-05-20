@@ -1,5 +1,7 @@
 import ScreenObject, random
+import threading
 asteroids = []
+lock = threading.Lock()
 
 def collision_detect(screenObject):
     for a in asteroids:
@@ -19,9 +21,13 @@ class AsteroidObject(ScreenObject.ScreenObject):
         self.speed_y = random.randint(-100,100) * 0.0001
         
     def destroy(self):
-        if asteroids.__contains__(self):
+        
+        lock.acquire()
+        try:
             asteroids.remove(self)
             super(AsteroidObject,self).destroy()
+        finally:
+            lock.release()
         if len(asteroids) == 0:
             self.game.game_over(win=True) 
         

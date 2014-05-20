@@ -85,7 +85,9 @@ class MeteorGame(object):
                 self.create_meteors(pygame.time.get_ticks())
                 self.sprites.update(time_passed,events)
                 self.display_lives()
+                
                 points = ScreenObject.collision_detect_all(self.sprites)
+               
                 if (points > 0):
                     self.score.update_score(points)
                 self.display_score()

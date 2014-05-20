@@ -3,10 +3,10 @@ import sys, json, ScreenObject
 from threading import Thread
 from time import sleep
 from Factory import MakeScreenObject
+import threading
 
 getting_screenState = False
-
-
+lock = threading.Lock()
 ## get current screen state    
 def get_screenState():
     
@@ -73,7 +73,11 @@ class Client(Handler):
         print "Client has Left Game"
         
     def on_msg(self, msg):
-        set_screenState(msg)
+        lock.acquire()
+        try:
+            set_screenState(msg)
+        finally:
+            lock.release()
 
 ##client = Client(host, port)
 ##client.do_send({'join': myname})
