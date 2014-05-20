@@ -4,11 +4,15 @@ from threading import Thread
 from time import sleep
 from Factory import MakeScreenObject
 
+getting_screenState = False
 
 ## get current screen state    
 def get_screenState():
-    screenstate ={}
     
+    global getting_screenState
+    getting_screenState = True
+    
+    screenstate ={}
     # report killed objects
     
     ## get state for existing screen objects
@@ -29,14 +33,20 @@ def get_screenState():
             "speed_y":obj.speed_y,
             "type": obj.__class__.__name__,
             "is_alive": True
+            
         }
-         
+        if screenstate[x]["type"]== "ShipObject":
+            screenstate[x]["direction"]= obj.direction
+    
+    getting_screenState = False
     return screenstate
 
 ##set new screen state values
 def set_screenState(screenstate):
-    #print screenstate
-    
+    global getting_screenState
+    while getting_screenState:
+        sleep(0.001)  # seconds
+        
     ##get all objects and set new position and speed
     for id in screenstate:
         val = screenstate[id]
@@ -51,6 +61,8 @@ def set_screenState(screenstate):
             obj.position_y= val["position_y"]
             obj.speed_x = val["speed_x"]
             obj.speed_y = val["speed_y"]
+            if val["type"]== "ShipObject":
+                obj.direction = val["direction"]
 
 
 host, port = 'localhost', 8888
