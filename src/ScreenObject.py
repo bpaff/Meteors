@@ -21,7 +21,7 @@ class ScreenObject(pygame.sprite.Sprite):
             
     def __init__(self,game,img_name,id=None):
         global img_path
-        super(ScreenObject,self).__init__(game.sprites)
+        
         lock = threading.Lock()
         
         ##gives each object a unique ID and stores it in a dictionary mapped to its object
@@ -52,6 +52,8 @@ class ScreenObject(pygame.sprite.Sprite):
         self.speed_y = 0
         self.is_alive = True
         
+        super(ScreenObject,self).__init__(game.sprites)
+        
                 
     def update(self,time,events):
         self.update_position(time)
@@ -79,6 +81,7 @@ class ScreenObject(pygame.sprite.Sprite):
     
     def destroy(self):
         self.kill()
+        print "destroy"
         self.is_alive = False
         
             

@@ -1,20 +1,15 @@
 import ScreenObject, random
 import threading
-asteroids = []
+
 lock = threading.Lock()
 
-def collision_detect(screenObject):
-    for a in asteroids:
-        if a.rect.colliderect(screenObject.rect):
-            return True
-    return False
 
 class AsteroidObject(ScreenObject.ScreenObject):
         
     def __init__(self, game, id=None):
         #todo get random inital cords along edge of screen
         super(AsteroidObject, self).__init__(game, "Asteroid.png", id)        
-        asteroids.append(self)
+        
         self.game = game
         
         self.speed_x = random.randint(-100,100) * 0.0001
@@ -24,11 +19,9 @@ class AsteroidObject(ScreenObject.ScreenObject):
         
         lock.acquire()
         try:
-            asteroids.remove(self)
             super(AsteroidObject,self).destroy()
         finally:
             lock.release()
-        if len(asteroids) == 0:
-            self.game.game_over(win=True) 
+         
         
         
