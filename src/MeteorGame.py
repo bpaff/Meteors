@@ -6,6 +6,8 @@ Created on Apr 14, 2014
 import sys, pygame, Asteroid, Ship, ScreenObject, Client, Factory
 import ScoreKeeper
 
+ships = []
+
 class MeteorGame(object):
     over = False
     
@@ -15,22 +17,27 @@ class MeteorGame(object):
         #self.player_score = self.score.get_score()
         #NOTE: not using yet, use this when lives = 0 and players chase each other
         self.continue_play = False
+        
     
     def game_over(self, win):
         msg = "You Win"
         if(not win):
             msg = "You Lose"
-            
+             
         MeteorGame.over = True
         font = pygame.font.SysFont(None, 30)
         gameover = font.render(msg, 1,(255,0,0))
         screen.blit(gameover,(100,100))
     
     def display_lives(self):
-        self.lives = Ship.ships[0].lives
-        font = pygame.font.SysFont(None,20)
-        lifes = font.render("Lives:  " + str(self.lives), 1, (0,0,0))
-        screen.blit(lifes,(10,10))
+        #not correct should not be setting it to first person live
+        for x in ships:
+            if x.getID() == self.playerShip.getID():
+                #self.lives = x.lives
+                font = pygame.font.SysFont(None,20)
+                lifes = font.render("Lives:  " + str(x.lives), 1, (0,0,0))
+                screen.blit(lifes,(10,10))
+                break
         
         
     def create_meteors(self, time):
@@ -61,10 +68,10 @@ class MeteorGame(object):
         ##connect to game server
         client = Client.Client("localhost", 8888)
         client.run()
-        
-        # instantiate ship        
-        Ship.ShipObject(self)
-        
+    
+        # instantiate ship
+        self.playerShip = Ship.ShipObject(self)        
+        ships.append(self.playerShip)
         
         # multiple meteors
         for x in range(0,1):
@@ -93,7 +100,8 @@ class MeteorGame(object):
                 self.display_score()
                 self.sprites.draw(screen)
             else:
-                self.score.stop()    
+                self.score.stop()
+                break    
             pygame.display.flip()
         
 if __name__=="__main__":

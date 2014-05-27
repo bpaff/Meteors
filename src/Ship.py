@@ -6,9 +6,10 @@ Created on Apr 18, 2014
 import ScreenObject, Bullet, pygame, math
 from random import randrange
 
-ships =[] ##for when we have more ships
+#ships =[] ##for when we have more ships
 
 class ShipObject(ScreenObject.ScreenObject):
+#     count = 0
     
     def __init__(self, game, id=None):
         # Call the parent class constructor
@@ -23,7 +24,9 @@ class ShipObject(ScreenObject.ScreenObject):
         
         self.respawn(False)
                 
-        ships.append(self)
+#         ShipObject.count += 1
+#         print(ShipObject.count)
+        #ships.append(self)
         
         self.invince =0
     
@@ -133,6 +136,7 @@ class ShipObject(ScreenObject.ScreenObject):
             Bullet.BulletObject(self)
             
     def collision_detect(self):
+        print(self.lives)
         if self.invis:
             self.invis_time+=1
             pass

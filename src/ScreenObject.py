@@ -58,6 +58,9 @@ class ScreenObject(pygame.sprite.Sprite):
     def update(self,time,events):
         self.update_position(time)
         self.screenwrap()        
+    
+    def getID(self):
+        return self.ID 
          
     def screenwrap(self):
         # wrap horizontal 
