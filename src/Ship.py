@@ -69,17 +69,10 @@ class ShipObject(ScreenObject.ScreenObject):
         self.position_x = x
         self.position_y = y
         
-<<<<<<< HEAD
-    def respawn(self):
-        print "spawn"
-        
+
+    def respawn(self, condition):
         self.position_x = randrange(self.screen_width)/2
         self.position_y = randrange(self.screen_height)/2
-=======
-    def respawn(self, condition):
-        self.position_x = self.screen_width/2
-        self.position_y = self.screen_height/2
->>>>>>> ea05bdfa5aa1e3f8ab92d8e8f98f5755b76ee0a5
         self.speed_x = 0
         self.speed_y = 0
         self.direction = 0  
