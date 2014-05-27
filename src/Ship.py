@@ -4,6 +4,7 @@ Created on Apr 18, 2014
 @author: Steven
 '''
 import ScreenObject, Bullet, pygame, math
+from random import randrange
 
 ships =[] ##for when we have more ships
 
@@ -38,12 +39,41 @@ class ShipObject(ScreenObject.ScreenObject):
         self.process_inputs(time, events)
         super(ShipObject,self).update(time,events)
         
-
-
+        
+    def process_inputs2(self, time, button):
+        if button == "Left":
+            self.direction+=0.5*time
+            if(self.direction > 360): 
+                self.direction -= 360  
+        if button == "Right":
+            self.direction-=0.5*time
+            if(self.direction < -360): 
+                self.direction += 360
+        if button =="Up":
+            self.move()
+        if button == "Space":
+            self.shoot()
+            
+            
+    def move(self):
+        x = self.position_x
+        y = self.position_y
+        realangle=self.direction+90
+        if realangle>360:
+            realangle-=360.0
+        realangle*=math.pi/180
+        rady=-math.sin(realangle)
+        radx=math.cos(realangle)
+        y+=rady 
+        x+=radx
+        self.position_x = x
+        self.position_y = y
         
     def respawn(self):
-        self.position_x = self.screen_width/2
-        self.position_y = self.screen_height/2
+        print "spawn"
+        
+        self.position_x = randrange(self.screen_width)/2
+        self.position_y = randrange(self.screen_height)/2
         self.speed_x = 0
         self.speed_y = 0
         self.direction = 0  
@@ -68,7 +98,7 @@ class ShipObject(ScreenObject.ScreenObject):
                 self.direction-=0.5*time
                 if(self.direction < -360): self.direction += 360                        
             if key[pygame.K_UP]:
-                self.accelerate()
+                self.move()
             if key[pygame.K_SPACE]:
                 self.shoot()
                 

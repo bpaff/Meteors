@@ -22,9 +22,6 @@ def get_screenState():
         obj = ScreenObject.screenObjs[x]
         
         #if it's a remote object don't worry about sending it's state 
-        if obj.remote:
-            continue
-        
         ##map object with its position and speed values
         screenstate[x] = {
             "position_x": obj.position_x,

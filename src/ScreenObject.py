@@ -81,7 +81,6 @@ class ScreenObject(pygame.sprite.Sprite):
     
     def destroy(self):
         self.kill()
-        print "destroy"
         self.is_alive = False
         
             
