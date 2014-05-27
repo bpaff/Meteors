@@ -85,8 +85,6 @@ class ShipObject(ScreenObject.ScreenObject):
         self.invis = True
         
         self.invis_time=0
-        if self.lives <= 0:
-            self.game.game_over(win=False)
         
     def process_inputs(self, time, events):
         # process key presses
@@ -136,7 +134,10 @@ class ShipObject(ScreenObject.ScreenObject):
             Bullet.BulletObject(self)
             
     def collision_detect(self):
-        print(self.lives)
+        if self.lives<=0:
+            self.destroy()
+            #self.game.game_over(win=False) ##we should disconnect the client when the lose. not call game over
+            self.game.QUIT()
         if self.invis:
             self.invis_time+=1
             pass

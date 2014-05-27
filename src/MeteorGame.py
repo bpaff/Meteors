@@ -54,7 +54,9 @@ class MeteorGame(object):
         font = pygame.font.SysFont(None, 20)
         player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
         screen.blit(player_score, (10, 20))   
-        
+    
+    def QUIT(self):
+        sys.exit()
     
     def main(self, screen):
         Factory.game = self
@@ -100,8 +102,7 @@ class MeteorGame(object):
                 self.display_score()
                 self.sprites.draw(screen)
             else:
-                self.score.stop()
-                break    
+                self.score.stop()  
             pygame.display.flip()
         
 if __name__=="__main__":
