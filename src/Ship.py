@@ -15,12 +15,12 @@ class ShipObject(ScreenObject.ScreenObject):
         self.game = game
         self.invis = False
         #number of lives per player
-        self.lives = 3 + 1 # 1 life is used during first spawn
+        self.lives = 3 # 1 life is used during first spawn
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
         
-        self.respawn()
+        self.respawn(False)
                 
         ships.append(self)
         
@@ -41,14 +41,15 @@ class ShipObject(ScreenObject.ScreenObject):
 
 
         
-    def respawn(self):
+    def respawn(self, condition):
         self.position_x = self.screen_width/2
         self.position_y = self.screen_height/2
         self.speed_x = 0
         self.speed_y = 0
         self.direction = 0  
         self.time_reload = 0  
-        self.lives-=1   
+        if condition == True:
+            self.lives-=1   
         self.invis = True
         
         self.invis_time=0
@@ -109,6 +110,6 @@ class ShipObject(ScreenObject.ScreenObject):
         else:
             collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
             if len(collisions) > 1:
-                self.respawn()
+                self.respawn(True)
         return 0
         
