@@ -42,11 +42,11 @@ class MeteorGame(object):
         
     def create_meteors(self, time):
         
-        if time/5000 > self.asteroid_spawn_counter:
+        if time/8000 > self.asteroid_spawn_counter:
             self.asteroid_spawn_counter += 1
-            spawn = time/10000
+            spawn = 2
             x=0
-            while x!=spawn:
+            while x<=spawn:
                 Asteroid.AsteroidObject(self)
                 x+=1
     
@@ -102,7 +102,8 @@ class MeteorGame(object):
                 self.display_score()
                 self.sprites.draw(screen)
             else:
-                self.score.stop()  
+                self.score.stop()
+                self.QUIT()  
             pygame.display.flip()
         
 if __name__=="__main__":

@@ -18,11 +18,11 @@ class BulletObject(ScreenObject.ScreenObject):
             angle-=360.0
         self.realangle=(angle+90)*math.pi/180
         
-        self.speed_x=1.0*math.cos(self.realangle)
-        self.speed_y=-1.0*math.sin(self.realangle)
+        self.speed_x=0.5*math.cos(self.realangle)
+        self.speed_y=-0.5*math.sin(self.realangle)
         
-        self.position_x = self.ship.position_x + (self.speed_x * 30)
-        self.position_y = self.ship.position_y + (self.speed_y * 30)
+        self.position_x = self.ship.position_x + (self.speed_x * 70)
+        self.position_y = self.ship.position_y + (self.speed_y * 70)
                 
     def update(self, time, events):
         self.time_life -= time
@@ -41,10 +41,14 @@ class BulletObject(ScreenObject.ScreenObject):
                 #TODO: ability to kill other objects
                 if isinstance(o,Asteroid.AsteroidObject):
                     score += 10
+                    o.destroy()
+                    self.destroy()
                 elif isinstance(o, Ship.ShipObject):
-                    score += 100
-                o.destroy()
-                self.destroy()
+                    if o == self.ship:
+                        self.destroy
+                    else:
+                        score += 100
+                        o.respawn(True)
 
         return score 
         
