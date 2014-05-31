@@ -15,40 +15,59 @@ class ShipObject(ScreenObject.ScreenObject):
         # Call the parent class constructor
         super(ShipObject, self).__init__(game, "ship2.jpg", id)
         
-        self.invis = False
         #number of lives per player
         self.lives = 3 # 1 life is used during first spawn
         self.respawn(False)
-        self.invince =0
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
         
     
     def update(self, time, events):
-        if self.invis_time==200:
-            self.invis = False
-            self.invis_time=0
+        if self.invis_time > 0:
+            self.invis_time -= time
         if self.time_reload > 0:
             self.time_reload -= time
-            
                     
         self.process_inputs(time, events)
+        
+        # transform the image with to the direction it should be facing and get the new rectangle
+        if self.invis_time > 0:
+            self.image_original = pygame.image.load(ScreenObject.img_path+"ship3.jpg")
+        else:
+            self.image_original = pygame.image.load(ScreenObject.img_path+"ship2.jpg")
+        self.image = pygame.transform.rotate(self.image_original, self.direction)
+        self.rect = self.image.get_rect(center=self.rect.center)
+        
         super(ShipObject,self).update(time,events)
         
-        
-    def process_inputs2(self, time, button):
-        if button == "Left":
+    def process_inputs(self, time, events):
+        # process key presses
+        #    iterate through events                    
+        # process key holds
+        if not self.remote:
+            key=pygame.key.get_pressed()
+            if key[pygame.K_LEFT]:
+                self.process_command('LEFT', time)            
+            if key[pygame.K_RIGHT]:
+                self.process_command('RIGHT', time)                        
+            if key[pygame.K_UP]:
+                self.process_command('UP', time)
+            if key[pygame.K_SPACE]:
+                self.process_command('SPACE', time)
+    
+    def process_command(self, command, time):
+        if command == "LEFT":
             self.direction+=0.5*time
             if(self.direction > 360): 
                 self.direction -= 360  
-        if button == "Right":
+        if command == "RIGHT":
             self.direction-=0.5*time
             if(self.direction < -360): 
                 self.direction += 360
-        if button =="Up":
+        if command =="UP":
             self.move()
-        if button == "Space":
+        if command == "SPACE":
             self.shoot()
             
             
@@ -76,38 +95,11 @@ class ShipObject(ScreenObject.ScreenObject):
         self.time_reload = 0  
         if condition == True:
             self.lives-=1   
-        self.invis = True
         
-        self.invis_time=0
+        self.invis_time=2000
         if self.lives <= 0:
             self.destroy()
-        
-    def process_inputs(self, time, events):
-        # process key presses
-        #    iterate through events                    
-        # process key holds
-        if not self.remote:
-            key=pygame.key.get_pressed()
-            if key[pygame.K_LEFT]:
-                self.direction+=0.5*time
-                if(self.direction > 360): self.direction -= 360            
-            if key[pygame.K_RIGHT]:
-                self.direction-=0.5*time
-                if(self.direction < -360): self.direction += 360                        
-            if key[pygame.K_UP]:
-                self.move()
-            if key[pygame.K_SPACE]:
-                self.shoot()
-                
-        # transform the image with to the direction it should be facing and get the new rectangle
-        if self.invis:
-            self.image_original = pygame.image.load(ScreenObject.img_path+"ship3.jpg")
-        else:
-            self.image_original = pygame.image.load(ScreenObject.img_path+"ship2.jpg")
-        self.image = pygame.transform.rotate(self.image_original, self.direction)
-        self.rect = self.image.get_rect(center=self.rect.center)
-        
-
+    
     def accelerate(self):
         x = self.speed_x
         y = self.speed_y
@@ -130,12 +122,15 @@ class ShipObject(ScreenObject.ScreenObject):
             Bullet.BulletObject(self)
             
     def collision_detect(self):
-        if self.invis:
-            self.invis_time+=1
-            pass
-        else:
+        if self.invis_time <= 0:
             collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
-            if len(collisions) > 1:
+            indices = range(0,len(collisions))
+            indices.reverse()
+            for i in indices:
+                obj = collisions[i]
+                if obj == self or (obj.__class__.__name__ == "BulletObject" and obj.ship and obj.ship == self):
+                    collisions.remove(obj)                
+            if len(collisions) > 0:
                 self.respawn(True)
         return 0
         

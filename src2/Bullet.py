@@ -8,23 +8,28 @@ bullets=[]
 
 class BulletObject(ScreenObject.ScreenObject):
     
-    def __init__(self, ship):
+    def __init__(self, ship, game=None):
         
         self.ship = ship
-        self.time_life = 250.0
+        self.time_life = 1000
         
-        angle = ship.direction                
-        if angle+90>360:
-            angle-=360.0
-        self.realangle=(angle+90)*math.pi/180
+        if ship:
+            self.game = ship.game
+        else:
+            self.game = game
+            
+        super(BulletObject, self).__init__(self.game, "fireball.png")
         
-        self.speed_x=1.0*math.cos(self.realangle)
-        self.speed_y=-1.0*math.sin(self.realangle)
-        
-        self.position_x = self.ship.position_x + (self.speed_x * 30)
-        self.position_y = self.ship.position_y + (self.speed_y * 30)
-        
-        super(BulletObject, self).__init__(ship.game, "fireball.png")
+        if ship:
+            angle = ship.direction                
+            if angle+90>360:
+                angle-=360.0
+            self.realangle=(angle+90)*math.pi/180
+            
+            self.speed_x=.25*math.cos(self.realangle)
+            self.speed_y=-.25*math.sin(self.realangle)
+            self.position_x = self.ship.position_x #+ (self.speed_x * 30)
+            self.position_y = self.ship.position_y #+ (self.speed_y * 30)            
                 
     def update(self, time, events):
         self.time_life -= time
@@ -35,19 +40,19 @@ class BulletObject(ScreenObject.ScreenObject):
             super(BulletObject,self).destroy()
     
     def collision_detect(self):
-    
-        collisions = pygame.sprite.spritecollide(self, self.ship.game.sprites, 0)
+        collisions = pygame.sprite.spritecollide(self, self.game.sprites, 0)
         score = 0
         if len(collisions) > 1:
-            for o in collisions:
+            for obj in collisions:
                 #TODO: ability to kill other objects
-                if isinstance(o,Asteroid.AsteroidObject):
+                if isinstance(obj,Asteroid.AsteroidObject):
                     score += 10
-                elif isinstance(o, Ship.ShipObject):
+                    obj.destroy()
+                    self.destroy()
+                elif isinstance(obj, Ship.ShipObject) and obj != self.ship:
                     score += 100
-                o.destroy()
-                self.destroy()
-
+                    obj.respawn(True)
+                    self.destroy()
         return score 
         
             

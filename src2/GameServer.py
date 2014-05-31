@@ -13,8 +13,8 @@ class MyHandler(Handler):
     def on_open(self):
         print 'client connected'
         clients.append(self)
-        clientid = self.gameServer.spawnclient(self)
-        # TODO: msg client with their id
+        self.gameServer.spawnclient(self)
+        self.gameServer.send_state(0,self)
         
     def on_close(self):
         print 'client left'
@@ -23,7 +23,7 @@ class MyHandler(Handler):
         
     def on_msg(self, msg):
         # send msg to all other clients
-        self.gameServer.clientmsg(msg)
+        self.gameServer.clientmsg(self, msg)
 
 class MeteorGameServer(object):
     
@@ -40,6 +40,7 @@ class MeteorGameServer(object):
         self.ships = {}
         self.send_state_counter = 0
         self.update_objs = []
+        self.client_inputs = []
         
     def create_meteors(self, time):
         if time/5000 > self.asteroid_spawn_counter:
@@ -50,14 +51,25 @@ class MeteorGameServer(object):
                 Asteroid.AsteroidObject(self)
                 x+=1
     
+    def process_client_inputs(self):
+        if len(self.client_inputs) == 0:
+            return
+        for client_input in self.client_inputs:
+            for client in client_input:
+                commands = client_input[client]
+                for cmd_name in commands:
+                    time = commands[cmd_name]
+                    self.ships[client].process_command(cmd_name,time)
+        self.client_inputs = []
+        
     def gametick(self):
         events = pygame.event.get()
         time_passed = self.clock.tick(60)
-        self.create_meteors(pygame.time.get_ticks())
-        self.sprites.update(time_passed,events)
+        #self.create_meteors(pygame.time.get_ticks())
+        self.sprites.update(time_passed,events)        
         ScreenObject.collision_detect_all(self.sprites)
         return time_passed
-        
+    
     def drawgame(self):
         white = 255,255,255
         self.screen.fill(white)
@@ -73,19 +85,19 @@ class MeteorGameServer(object):
         if self.ships.has_key(client):
             self.ships[client].destroy()
         
-    def send_state(self, time_passed):
+    def send_state(self, time_passed, client=None):
         self.send_state_counter -= time_passed
-        if self.send_state_counter > 0:
-            return        
-        self.send_state_counter = 100        
-    
+        if not client:
+            if self.send_state_counter > 0:
+                return        
+            self.send_state_counter = 100
         state = {}
         
         #send all the ship positions and new asteroids
         for oID in ScreenObject.screenObjs:
             obj = ScreenObject.screenObjs[oID]
             
-            if obj.__class__.__name__ == "ShipObject" or obj in self.update_objs:
+            if client or obj.__class__.__name__ == "ShipObject" or obj in self.update_objs:
                     
                 # map object with its position and speed values
                 state[oID] = {
@@ -94,21 +106,25 @@ class MeteorGameServer(object):
                     "speed_x":obj.speed_x,
                     "speed_y":obj.speed_y,
                     "type": obj.__class__.__name__,
-                    "is_alive": obj.is_alive
-                    
+                    "is_alive": obj.is_alive                    
                 }
                 
                 if state[oID]["type"]== "ShipObject":
                     state[oID]["direction"]= obj.direction
+                if state[oID]["type"]== "BulletObject":
+                    state[oID]["time_life"]= obj.time_life
         
-        self.update_objs = []
-        
-        # send state to every client
-        for client in self.ships.keys():
+        if client:
             client.do_send(state)
+        else:
+            # send state to every client
+            for client in self.ships.keys():
+                client.do_send(state)
+            # clear updated objects
+            self.update_objs = []
             
-    def clientmsg(self, msg):
-        print "clientsmg: " + msg    
+    def clientmsg(self, client, msg):
+        self.client_inputs.append({client: msg})
     
     def run(self):
         port = 8888
@@ -116,9 +132,16 @@ class MeteorGameServer(object):
         
         print"running"
         
+        Asteroid.AsteroidObject(self)
+        Asteroid.AsteroidObject(self)
+        Asteroid.AsteroidObject(self)
+        Asteroid.AsteroidObject(self)
+        #Ship.ShipObject(self)
+        
         while 1:
             poll(timeout=0.001) # in seconds
-            time_passed = self.gametick()
+            self.process_client_inputs()
+            time_passed = self.gametick()            
             self.send_state(time_passed)
             self.drawgame()
             

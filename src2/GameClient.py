@@ -26,11 +26,19 @@ class GameClient(Handler):
         self.laststate = None
         self.state = None
         self.update_objs = []
+        self.first_state = None
+        self.first_state_loaded = False
+        
+        self.commands = {}
+        self.commands_send_timer = 0
+        
         
     def on_close(self):
         print "Client has Left Game"
         
     def on_msg(self, msg):
+        if not self.first_state:
+            self.first_state = msg
         self.state = msg
 
     def periodic_poll(self):
@@ -43,6 +51,9 @@ class GameClient(Handler):
             return
         
         state = self.state
+        if not self.first_state_loaded:
+            state = self.first_state
+            self.first_state_loaded = True
         
         ##get all objects and set new position and speed
         for id in state:
@@ -60,15 +71,38 @@ class GameClient(Handler):
         
     def gametick(self):
         events = pygame.event.get()
-        print events
-        if len(events) > 0:
-            raise Exception()
         time_passed = self.clock.tick(60)
         self.sprites.update(time_passed,events)
-        ScreenObject.collision_detect_all(self.sprites)
+        self.process_inputs(time_passed)
+        #ScreenObject.collision_detect_all(self.sprites)
         
         return time_passed
+    
+    def process_inputs(self, time_passed):
+        def set_inc(k):
+            if self.commands.has_key(k):
+                self.commands[k] += time_passed
+            else:
+                self.commands[k] = time_passed
         
+        key=pygame.key.get_pressed()
+        if key[pygame.K_LEFT]:
+            set_inc('LEFT')                                    
+        if key[pygame.K_RIGHT]:
+            set_inc('RIGHT')                        
+        if key[pygame.K_UP]:
+            set_inc('UP')
+        if key[pygame.K_SPACE]:
+            set_inc('SPACE')
+                    
+        self.commands_send_timer -= time_passed
+        if self.commands_send_timer < 0 and len(self.commands.keys()) > 0:
+            sendcmds = self.commands.copy()
+            self.commands = {}
+            self.do_send(sendcmds)
+            self.commands_send_timer = 200
+            
+            
     def drawgame(self):
         white = 255,255,255
         self.screen.fill(white)

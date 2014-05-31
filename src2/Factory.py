@@ -13,9 +13,8 @@ def MakeScreenObject(game, vals, id=None):
     if type == "ShipObject":
         obj = Ship.ShipObject(game,id)
     if type == "BulletObject":
-        # obj = Bullet.BulletObject(Ship.)
-        return
-    
+        obj = Bullet.BulletObject(None,game)
+        
     LoadScreenObject(obj, vals)
     return obj
 
@@ -23,6 +22,8 @@ def LoadScreenObject(obj, vals):
     type = vals["type"]
     if type == "ShipObject":
         obj.direction = vals['direction']
+    if type == 'BulletObject':
+        obj.time_life = vals['time_life']
     obj.position_x = vals["position_x"]
     obj.position_y = vals["position_y"]
     obj.speed_x = vals["speed_x"]
