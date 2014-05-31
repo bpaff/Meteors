@@ -25,6 +25,7 @@ class GameClient(Handler):
         self.clock=pygame.time.Clock()
         self.laststate = None
         self.state = None
+        self.update_objs = []
         
     def on_close(self):
         print "Client has Left Game"
@@ -47,23 +48,21 @@ class GameClient(Handler):
         for id in state:
             val = state[id]
             if id not in ScreenObject.screenObjs.keys():
-                Factory.MakeScreenObject(self, val["type"],id)                
+                Factory.MakeScreenObject(self, val,id)                
             else:
                 obj = ScreenObject.screenObjs[id]
+                Factory.LoadScreenObject(obj, val)
                 if obj.is_alive != val["is_alive"]:
                     obj.destroy()
-                obj.position_x = val["position_x"]
-                obj.position_y= val["position_y"]
-                obj.speed_x = val["speed_x"]
-                obj.speed_y = val["speed_y"]
-                if val["type"]== "ShipObject":
-                    obj.direction = val["direction"]
         self.state = None
         
     
         
     def gametick(self):
         events = pygame.event.get()
+        print events
+        if len(events) > 0:
+            raise Exception()
         time_passed = self.clock.tick(60)
         self.sprites.update(time_passed,events)
         ScreenObject.collision_detect_all(self.sprites)

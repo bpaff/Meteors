@@ -26,7 +26,6 @@ class MyHandler(Handler):
         self.gameServer.clientmsg(msg)
 
 class MeteorGameServer(object):
-    over = False
     
     def __init__(self):
         
@@ -40,6 +39,7 @@ class MeteorGameServer(object):
         self.clock=pygame.time.Clock()
         self.ships = {}
         self.send_state_counter = 0
+        self.update_objs = []
         
     def create_meteors(self, time):
         if time/5000 > self.asteroid_spawn_counter:
@@ -81,23 +81,27 @@ class MeteorGameServer(object):
     
         state = {}
         
-        # get state for existing screen objects
+        #send all the ship positions and new asteroids
         for oID in ScreenObject.screenObjs:
-            # for every object        
             obj = ScreenObject.screenObjs[oID]
             
-            # map object with its position and speed values
-            state[oID] = {
-                "position_x": obj.position_x,
-                "position_y": obj.position_y, 
-                "speed_x":obj.speed_x,
-                "speed_y":obj.speed_y,
-                "type": obj.__class__.__name__,
-                "is_alive": obj.is_alive
+            if obj.__class__.__name__ == "ShipObject" or obj in self.update_objs:
+                    
+                # map object with its position and speed values
+                state[oID] = {
+                    "position_x": obj.position_x,
+                    "position_y": obj.position_y, 
+                    "speed_x":obj.speed_x,
+                    "speed_y":obj.speed_y,
+                    "type": obj.__class__.__name__,
+                    "is_alive": obj.is_alive
+                    
+                }
                 
-            }
-            if state[oID]["type"]== "ShipObject":
-                state[oID]["direction"]= obj.direction
+                if state[oID]["type"]== "ShipObject":
+                    state[oID]["direction"]= obj.direction
+        
+        self.update_objs = []
         
         # send state to every client
         for client in self.ships.keys():

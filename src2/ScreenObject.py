@@ -53,6 +53,8 @@ class ScreenObject(pygame.sprite.Sprite):
         self.is_alive = True
         
         super(ScreenObject,self).__init__(game.sprites)
+        self.game = game
+        self.game.update_objs.append(self)
         
                 
     def update(self,time,events):
@@ -85,5 +87,6 @@ class ScreenObject(pygame.sprite.Sprite):
     def destroy(self):
         self.kill()
         self.is_alive = False
+        self.game.update_objs.append(self)
         
             

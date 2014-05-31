@@ -14,22 +14,16 @@ class ShipObject(ScreenObject.ScreenObject):
     def __init__(self, game, id=None):
         # Call the parent class constructor
         super(ShipObject, self).__init__(game, "ship2.jpg", id)
-        self.game = game
+        
         self.invis = False
         #number of lives per player
         self.lives = 3 # 1 life is used during first spawn
+        self.respawn(False)
+        self.invince =0
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
         
-        self.respawn(False)
-                
-#         ShipObject.count += 1
-#         print(ShipObject.count)
-        #ships.append(self)
-        
-        self.invince =0
-    
     
     def update(self, time, events):
         if self.invis_time==200:
