@@ -12,6 +12,7 @@ class BulletObject(ScreenObject.ScreenObject):
         
         self.ship = ship
         self.time_life = 1000
+        score = 0
         
         if ship:
             self.game = ship.game
@@ -53,6 +54,8 @@ class BulletObject(ScreenObject.ScreenObject):
                     score += 100
                     obj.respawn(True)
                     self.destroy()
+        if self.ship is not None:
+            self.ship.score += score
         return score 
         
             
