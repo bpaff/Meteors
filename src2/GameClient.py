@@ -43,6 +43,10 @@ class GameClient(Handler):
         print "Client has Left Game"
         
     def on_msg(self, msg):
+        if msg.has_key('SHIP_ID'):
+            self.ship_id = msg['SHIP_ID']
+            print 'my ship id: ' + self.ship_id
+            return 
         if not self.first_state:
             self.first_state = msg
         self.state = msg

@@ -13,8 +13,9 @@ class MyHandler(Handler):
     def on_open(self):
         print 'client connected'
         clients.append(self)
-        self.gameServer.spawnclient(self)
+        shipid = self.gameServer.spawnclient(self)
         self.gameServer.send_state(0,self)
+        self.do_send({"SHIP_ID":shipid})
         
     def on_close(self):
         print 'client left'
