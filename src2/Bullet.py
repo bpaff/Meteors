@@ -49,7 +49,7 @@ class BulletObject(ScreenObject.ScreenObject):
                     score += 10
                     obj.destroy()
                     self.destroy()
-                elif isinstance(obj, Ship.ShipObject) and obj != self.ship:
+                elif isinstance(obj, Ship.ShipObject) and obj != self.ship and obj.invis_time <= 0:
                     score += 100
                     obj.respawn(True)
                     self.destroy()
