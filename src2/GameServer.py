@@ -43,6 +43,8 @@ class MeteorGameServer(object):
         self.client_inputs = []
         
     def create_meteors(self, time):
+        if len(self.ships.keys()) == 0:
+            return
         if time/5000 > self.asteroid_spawn_counter:
             self.asteroid_spawn_counter += 1
             spawn = time/10000
