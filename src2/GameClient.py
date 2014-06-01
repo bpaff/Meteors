@@ -35,6 +35,8 @@ class GameClient(Handler):
         self.commands = {}
         self.commands_send_timer = 0
         
+        self.score = None
+        
     def display_lives(self):
         lives_set = False
         font = pygame.font.SysFont(None,20)
@@ -130,11 +132,13 @@ class GameClient(Handler):
         white = 255,255,255
         self.screen.fill(white)
         self.sprites.draw(self.screen)
-        self.display_lives()
+        #self.display_lives()
         self.display_score()
         pygame.display.flip()
     
     def display_score(self):
+        if not self.score:
+            return
         font = pygame.font.SysFont(None, 20)
         player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
         self.screen.blit(player_score, (10, 20))   

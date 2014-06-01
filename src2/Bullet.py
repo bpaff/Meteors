@@ -55,7 +55,7 @@ class BulletObject(ScreenObject.ScreenObject):
                     obj.respawn(True)
                     self.destroy()
         if self.ship is not None:
-            self.ship.score += score
+            self.ship.scoreKeeper.score += score
         return score 
         
             

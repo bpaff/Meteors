@@ -22,7 +22,7 @@ class ShipObject(ScreenObject.ScreenObject):
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
-        self.score = ScoreKeeper.ScoreKeeper(1)
+        self.scoreKeeper = ScoreKeeper.ScoreKeeper(1)
     
     def update(self, time, events):
         if self.invis_time > 0:
