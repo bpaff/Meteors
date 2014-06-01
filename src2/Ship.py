@@ -66,12 +66,12 @@ class ShipObject(ScreenObject.ScreenObject):
             if(self.direction < -360): 
                 self.direction += 360
         if command =="UP":
-            self.move()
+            self.move(time)
         if command == "SPACE":
             self.shoot()
             
             
-    def move(self):
+    def move(self, time):
         x = self.position_x
         y = self.position_y
         realangle=self.direction+90
@@ -80,8 +80,8 @@ class ShipObject(ScreenObject.ScreenObject):
         realangle*=math.pi/180
         rady=-math.sin(realangle)
         radx=math.cos(realangle)
-        y+=rady 
-        x+=radx
+        y+=rady * time / 17
+        x+=radx * time / 17
         self.position_x = x
         self.position_y = y
         

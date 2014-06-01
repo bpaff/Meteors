@@ -100,7 +100,7 @@ class GameClient(Handler):
             sendcmds = self.commands.copy()
             self.commands = {}
             self.do_send(sendcmds)
-            self.commands_send_timer = 200
+            self.commands_send_timer = 100
             
             
     def drawgame(self):

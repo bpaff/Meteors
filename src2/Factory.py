@@ -4,6 +4,9 @@ import Bullet
 #from MeteorGame import game
 
 def MakeScreenObject(game, vals, id=None):
+    if vals["is_alive"] == False:
+        return None
+    
     #print "make object"
     #return 
     obj = None
