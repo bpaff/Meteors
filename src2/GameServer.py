@@ -65,7 +65,7 @@ class MeteorGameServer(object):
     def gametick(self):
         events = pygame.event.get()
         time_passed = self.clock.tick(60)
-        #self.create_meteors(pygame.time.get_ticks())
+        self.create_meteors(pygame.time.get_ticks())
         self.sprites.update(time_passed,events)        
         ScreenObject.collision_detect_all(self.sprites)
         return time_passed
@@ -90,7 +90,7 @@ class MeteorGameServer(object):
         if not client:
             if self.send_state_counter > 0:
                 return        
-            self.send_state_counter = 100
+            self.send_state_counter = 50
         state = {}
         
         #send all the ship positions and new asteroids

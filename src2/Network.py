@@ -2,6 +2,7 @@ import asynchat
 import asyncore
 import json
 import socket
+import threading
 from time import sleep
 
 class Handler(asynchat.async_chat):
@@ -15,6 +16,7 @@ class Handler(asynchat.async_chat):
             self.connect((host, port))  # asynchronous and non-blocking
         self.set_terminator('\0')
         self._buffer = []
+        self.sending = threading.Lock()
         
     def collect_incoming_data(self, data):
         self._buffer.append(data)
@@ -30,6 +32,12 @@ class Handler(asynchat.async_chat):
 
     def handle_connect(self):  # called on the active side
         self.on_open()
+        
+    # bug fix for not being thread safe 
+    def initiate_send(self):
+        self.sending.acquire()
+        asynchat.async_chat.initiate_send(self)
+        self.sending.release()
         
     # API you can use
     def do_send(self, msg):
