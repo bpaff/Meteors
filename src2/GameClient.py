@@ -7,8 +7,8 @@ import threading
 
 lock = threading.Lock()
 
-# host, port = 'localhost', 8888 
-host, port = '169.234.49.64', 8888
+host, port = 'localhost', 8888 
+#host, port = '169.234.49.64', 8888
 
 class GameClient(Handler):
     
@@ -18,7 +18,7 @@ class GameClient(Handler):
         
         pygame.init()
         pygame.display.set_caption("Inf123 - 2to1's Game")
-        size = width, height = 800, 600
+        size = width, height = 1024, 768
         self.screen = pygame.display.set_mode(size) 
                
         
