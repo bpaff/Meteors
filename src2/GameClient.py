@@ -4,6 +4,7 @@ import pygame
 from threading import Thread
 from time import sleep
 import threading
+import ScoreKeeper
 
 lock = threading.Lock()
 
@@ -61,7 +62,12 @@ class GameClient(Handler):
         while 1:
             poll()
             sleep(0.005)  # seconds
-        
+    
+    def show_score(self):
+        font = pygame.font.SysFont(None, 20)
+        player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
+        self.screen.blit(player_score, (10, 20))  
+    
     def updatestate(self):
         if not self.state:
             return
@@ -125,7 +131,13 @@ class GameClient(Handler):
         self.screen.fill(white)
         self.sprites.draw(self.screen)
         self.display_lives()
+        self.display_score()
         pygame.display.flip()
+    
+    def display_score(self):
+        font = pygame.font.SysFont(None, 20)
+        player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
+        self.screen.blit(player_score, (10, 20))   
         
     def run(self):                         
         thread = Thread(target=self.periodic_poll)
@@ -135,9 +147,11 @@ class GameClient(Handler):
         # wait for first state to come in from server
         while not self.state:
             sleep(0.05)
+    
         
         while 1:
-            self.updatestate();
+            
+            self.updatestate()
             time_passed = self.gametick()   
             self.drawgame()      
 

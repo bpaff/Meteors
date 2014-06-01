@@ -5,6 +5,7 @@ Created on Apr 18, 2014
 '''
 import ScreenObject, Bullet, pygame, math
 from random import randrange
+import ScoreKeeper
 
 #ships =[] ##for when we have more ships
 
@@ -21,7 +22,7 @@ class ShipObject(ScreenObject.ScreenObject):
         
         # for tracking and drawing the direction the ship is facing
         self.image_original = self.image        
-        
+        self.score = ScoreKeeper.ScoreKeeper(1)
     
     def update(self, time, events):
         if self.invis_time > 0:
