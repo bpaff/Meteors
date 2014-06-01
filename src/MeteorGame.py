@@ -8,8 +8,10 @@ import ScoreKeeper
 
 ships = []
 
+
 class MeteorGame(object):
     over = False
+    myship = None
     
     def __init__(self):
         #instantiate ScoreKeeper
@@ -72,7 +74,8 @@ class MeteorGame(object):
         client.run()
     
         # instantiate ship
-        self.playerShip = Ship.ShipObject(self)        
+        self.playerShip = Ship.ShipObject(self)  
+        self.myship = self.playerShip    
         ships.append(self.playerShip)
         
         # multiple meteors

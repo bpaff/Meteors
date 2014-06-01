@@ -4,6 +4,7 @@ from threading import Thread
 from time import sleep
 from Factory import MakeScreenObject
 import threading
+import MeteorGame
 
 getting_screenState = False
 lock = threading.Lock()
@@ -21,6 +22,12 @@ def get_screenState():
         ##for every object        
         obj = ScreenObject.screenObjs[x]
         
+        if(obj.__class__.__name__ == "ShipObject"):
+            print(obj.ID)
+            print(MeteorGame.MeteorGame.playerShip.ID)
+            if(obj.ID != MeteorGame.MeteorGame.playerShip.ID):
+                continue
+                
         #if it's a remote object don't worry about sending it's state 
         ##map object with its position and speed values
         screenstate[x] = {
@@ -49,7 +56,6 @@ def set_screenState(screenstate):
         val = screenstate[id]
         if id not in ScreenObject.screenObjs.keys():
             MakeScreenObject(val["type"],id)
-            pass
         
         else:
             obj = ScreenObject.screenObjs[id]
