@@ -19,7 +19,8 @@ class GameClient(Handler):
         pygame.init()
         pygame.display.set_caption("Inf123 - 2to1's Game")
         size = width, height = 800, 600
-        self.screen = pygame.display.set_mode(size)        
+        self.screen = pygame.display.set_mode(size) 
+               
         
         self.asteroid_spawn_counter = 0
         self.sprites=pygame.sprite.Group()
@@ -33,6 +34,10 @@ class GameClient(Handler):
         self.commands = {}
         self.commands_send_timer = 0
         
+    def display_lives(self, Ship):
+        font = pygame.font.SysFont(None,20)
+        lifes = font.render("Lives:  " + str(Ship.lives), 1, (0,0,0))
+        self.screen.blit(lifes,(10,10))
         
     def on_close(self):
         print "Client has Left Game"

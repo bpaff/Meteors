@@ -25,6 +25,8 @@ def LoadScreenObject(obj, vals):
     type = vals["type"]
     if type == "ShipObject":
         obj.direction = vals['direction']
+        obj.lives = vals['lives']
+        obj.invis_time = vals['invis_time']
     if type == 'BulletObject':
         obj.time_life = vals['time_life']
     obj.position_x = vals["position_x"]

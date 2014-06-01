@@ -113,6 +113,8 @@ class MeteorGameServer(object):
                 
                 if state[oID]["type"]== "ShipObject":
                     state[oID]["direction"]= obj.direction
+                    state[oID]["lives"] = obj.lives
+                    state[oID]["invis_time"] = obj.invis_time
                 if state[oID]["type"]== "BulletObject":
                     state[oID]["time_life"]= obj.time_life
         
