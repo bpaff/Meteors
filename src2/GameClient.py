@@ -34,10 +34,16 @@ class GameClient(Handler):
         self.commands = {}
         self.commands_send_timer = 0
         
-    def display_lives(self, Ship):
+    def display_lives(self):
+        lives_set = False
         font = pygame.font.SysFont(None,20)
-        lifes = font.render("Lives:  " + str(Ship.lives), 1, (0,0,0))
+        for id in ScreenObject.screenObjs:
+            if id == self.ship_id:
+                val = self.state[id]
+                lifes = font.render("Lives:  " + val["lives"], 1, (0,0,0))
         self.screen.blit(lifes,(10,10))
+        ##if not lives_set:
+  
         
     def on_close(self):
         print "Client has Left Game"
@@ -75,6 +81,7 @@ class GameClient(Handler):
                 Factory.LoadScreenObject(obj, val)
                 if obj.is_alive != val["is_alive"]:
                     obj.destroy()
+
         self.state = None
         
     
@@ -117,6 +124,7 @@ class GameClient(Handler):
         white = 255,255,255
         self.screen.fill(white)
         self.sprites.draw(self.screen)
+        self.display_lives()
         pygame.display.flip()
         
     def run(self):                         

@@ -96,7 +96,7 @@ class ShipObject(ScreenObject.ScreenObject):
         if condition == True:
             self.lives-=1   
         
-        self.invis_time=10000
+        self.invis_time=5000
         if self.lives <= 0:
             self.destroy()
     
