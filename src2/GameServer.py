@@ -116,6 +116,7 @@ class MeteorGameServer(object):
                     state[oID]["direction"]= obj.direction
                     state[oID]["lives"] = obj.lives
                     state[oID]["invis_time"] = obj.invis_time
+                    state[oID]["score"] = obj.scoreKeeper.get_score()
                 if state[oID]["type"]== "BulletObject":
                     state[oID]["time_life"]= obj.time_life
         

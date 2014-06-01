@@ -27,6 +27,7 @@ def LoadScreenObject(obj, vals):
         obj.direction = vals['direction']
         obj.lives = vals["lives"]
         obj.invis_time = vals['invis_time']
+        obj.score = vals['score']
     if type == 'BulletObject':
         obj.time_life = vals['time_life']
     obj.position_x = vals["position_x"]

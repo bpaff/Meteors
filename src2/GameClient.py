@@ -8,8 +8,8 @@ import ScoreKeeper
 
 lock = threading.Lock()
 
-host, port = 'localhost', 8888 
-#host, port = '169.234.49.64', 8888
+#host, port = 'localhost', 8888 
+host, port = '169.234.49.64', 8888
 
 class GameClient(Handler):
     
@@ -37,17 +37,6 @@ class GameClient(Handler):
         
         self.score = None
         
-    def display_lives(self):
-        lives_set = False
-        font = pygame.font.SysFont(None,20)
-        for id in ScreenObject.screenObjs:
-            if id == self.ship_id:
-                val = self.state[id]
-                lifes = font.render("Lives:  " + val["lives"], 1, (0,0,0))
-        self.screen.blit(lifes,(10,10))
-        ##if not lives_set:
-  
-        
     def on_close(self):
         print "Client has Left Game"
         
@@ -64,11 +53,6 @@ class GameClient(Handler):
         while 1:
             poll()
             sleep(0.005)  # seconds
-    
-    def show_score(self):
-        font = pygame.font.SysFont(None, 20)
-        player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
-        self.screen.blit(player_score, (10, 20))  
     
     def updatestate(self):
         if not self.state:
@@ -132,16 +116,32 @@ class GameClient(Handler):
         white = 255,255,255
         self.screen.fill(white)
         self.sprites.draw(self.screen)
-        #self.display_lives()
+        self.display_lives()
         self.display_score()
         pygame.display.flip()
     
     def display_score(self):
-        if not self.score:
-            return
-        font = pygame.font.SysFont(None, 20)
-        player_score = font.render("Score:" + str(self.score.get_score()), 1, (0,0,0))
-        self.screen.blit(player_score, (10, 20))   
+        my_ship =  self.get_my_ship()
+        if my_ship:
+            font = pygame.font.SysFont(None, 20)
+            player_score = font.render("Score:" + str(my_ship.score), 1, (0,0,0))
+            self.screen.blit(player_score, (10, 20))
+            
+    def display_lives(self):
+        lives_set = False
+        my_ship = self.get_my_ship()
+        if my_ship:
+            font = pygame.font.SysFont(None,20)
+            lifes = font.render("Lives:  " + str(my_ship.lives), 1, (0,0,0))
+            self.screen.blit(lifes,(10,10))
+            lives_set = True
+        ##if not lives_set:
+        
+    def get_my_ship(self):
+        for id in ScreenObject.screenObjs:
+            if id == self.ship_id:
+                return ScreenObject.screenObjs[id]
+        return None
         
     def run(self):                         
         thread = Thread(target=self.periodic_poll)
