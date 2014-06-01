@@ -32,7 +32,7 @@ class MeteorGameServer(object):
         
         pygame.init()
         pygame.display.set_caption("Inf123 - 2to1's Game")
-        size = width, height = 800, 600
+        size = width, height = 1024, 768
         self.screen = pygame.display.set_mode(size)        
         
         self.asteroid_spawn_counter = 0
