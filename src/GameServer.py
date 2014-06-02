@@ -135,6 +135,11 @@ class MeteorGameServer(object):
                 if state[oID]["type"]== "BulletObject":
                     state[oID]["time_life"]= obj.time_life
         
+        # TODO check for winner
+        #    count number of ships still alive
+        #    if 0: get ship with highest score
+        #state['WINNER'] = # ship with highest score 
+        
         if client:
             client.do_send(state)
         else:

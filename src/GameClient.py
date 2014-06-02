@@ -36,6 +36,7 @@ class GameClient(Handler):
         
         self.score = None
         self.ship_id = None
+        self.winner_id = None
         
     def on_close(self):
         print "Client has Left Game"
@@ -45,6 +46,9 @@ class GameClient(Handler):
             self.ship_id = msg['SHIP_ID']
             print 'my ship id: ' + self.ship_id
             return 
+        if msg.has_key('WINNER'):
+            self.winner_id = msg['WINNER']            
+            msg.pop('WINNER',None)
         if not self.first_state:
             self.first_state = msg
         self.state = msg
@@ -118,6 +122,7 @@ class GameClient(Handler):
         self.sprites.draw(self.screen)
         self.display_lives()
         self.display_score()
+        # TODO: Display winner if it exists
         pygame.display.flip()
     
     def display_score(self):
