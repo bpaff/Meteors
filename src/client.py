@@ -8,7 +8,7 @@ import threading
 lock = threading.Lock()
 
 host, port = 'localhost', 8888 
-host, port = '169.234.49.64', 8888
+# host, port = '169.234.49.64', 8888
 
 class GameClient(Handler):
     
@@ -89,6 +89,11 @@ class GameClient(Handler):
         
     def gametick(self):
         events = pygame.event.get()
+        for e in events:
+            print(e)
+            if e.type == pygame.QUIT:
+                print('byebye')
+                pygame.quit()
         time_passed = self.clock.tick(60)
         self.sprites.update(time_passed,events)
         self.process_inputs(time_passed)
