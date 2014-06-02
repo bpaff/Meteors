@@ -4,12 +4,11 @@ import pygame
 from threading import Thread
 from time import sleep
 import threading
-import ScoreKeeper
 
 lock = threading.Lock()
 
-#host, port = 'localhost', 8888 
-host, port = '169.234.49.64', 8888
+host, port = 'localhost', 8888 
+#host, port = '169.234.49.64', 8888
 
 class GameClient(Handler):
     
@@ -36,6 +35,7 @@ class GameClient(Handler):
         self.commands_send_timer = 0
         
         self.score = None
+        self.ship_id = None
         
     def on_close(self):
         print "Client has Left Game"
@@ -139,7 +139,7 @@ class GameClient(Handler):
         
     def get_my_ship(self):
         for id in ScreenObject.screenObjs:
-            if id == self.ship_id:
+            if self.ship_id and self.ship_id == id:
                 return ScreenObject.screenObjs[id]
         return None
         
@@ -147,12 +147,9 @@ class GameClient(Handler):
         thread = Thread(target=self.periodic_poll)
         thread.daemon = True  # die when the main thread dies 
         thread.start()
-        
         # wait for first state to come in from server
         while not self.state:
             sleep(0.05)
-    
-        
         while 1:
             
             self.updatestate()

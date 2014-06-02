@@ -8,11 +8,8 @@ screenObjs ={}
 screenObjs_killed = []
 
 def collision_detect_all(screenObjects):
-    score = 0
     for s in screenObjects:
-        score += s.collision_detect()
-    return score
-    
+        s.collision_detect()
             
 img_path = "../images/"
 
@@ -53,9 +50,11 @@ class ScreenObject(pygame.sprite.Sprite):
         self.is_alive = True
         
         super(ScreenObject,self).__init__(game.sprites)
+        self.game = game
+        self.game.update_objs.append(self)
         
                 
-    def update(self,time,events):
+    def update(self,time,events):        
         self.update_position(time)
         self.screenwrap()        
     
@@ -80,10 +79,11 @@ class ScreenObject(pygame.sprite.Sprite):
         self.rect.center = (self.position_x, self.position_y)
         
     def collision_detect(self):
-        return 0
+        pass
     
     def destroy(self):
         self.kill()
         self.is_alive = False
+        self.game.update_objs.append(self)
         
             
