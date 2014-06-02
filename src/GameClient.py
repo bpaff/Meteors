@@ -37,6 +37,7 @@ class GameClient(Handler):
         self.score = None
         self.ship_id = None
         self.winner_id = None
+        self.top_score = 0
         
     def on_close(self):
         print "Client has Left Game"
@@ -46,9 +47,15 @@ class GameClient(Handler):
             self.ship_id = msg['SHIP_ID']
             print 'my ship id: ' + self.ship_id
             return 
-        if msg.has_key('WINNER'):
-            self.winner_id = msg['WINNER']            
-            msg.pop('WINNER',None)
+        if msg.has_key('winner'):
+            self.winner_id = msg['winner']
+            msg.pop('winner',None)
+        else:
+            self.winner_id = None
+        if msg.has_key('top_score'):
+            self.top_score = msg['top_score']
+            msg.pop('top_score',None)
+            
         if not self.first_state:
             self.first_state = msg
         self.state = msg
@@ -125,22 +132,32 @@ class GameClient(Handler):
         # TODO: Display winner if it exists
         pygame.display.flip()
     
-    def display_score(self):
-        my_ship =  self.get_my_ship()
-        if my_ship:
-            font = pygame.font.SysFont(None, 20)
-            player_score = font.render("Score:" + str(my_ship.score), 1, (0,0,0))
-            self.screen.blit(player_score, (10, 20))
-            
     def display_lives(self):
-        lives_set = False
         my_ship = self.get_my_ship()
         if my_ship:
             font = pygame.font.SysFont(None,20)
             lifes = font.render("Lives:  " + str(my_ship.lives), 1, (0,0,0))
             self.screen.blit(lifes,(10,10))
-            lives_set = True
-        ##if not lives_set:
+        
+    def display_score(self):
+        my_ship =  self.get_my_ship()
+        if my_ship:
+            font = pygame.font.SysFont(None, 20)
+            player_score = font.render("Score:" + str(my_ship.score), 1, (0,0,0))
+            self.screen.blit(player_score, (10, 25))
+        # display top score
+        font = pygame.font.SysFont(None, 20)
+        player_score = font.render("Top Score:" + str(self.top_score), 1, (0,0,0))
+        self.screen.blit(player_score, (10, 40))
+        
+        if self.winner_id:
+            msg = "You the top dawg"
+            if not my_ship or (my_ship.ID != self.winner_id):
+                msg = "Try harder next time"
+            font = pygame.font.SysFont(None, 30)
+            gameover = font.render(msg, 1,(255,0,0))
+            self.screen.blit(gameover,(100,100))
+
         
     def get_my_ship(self):
         for id in ScreenObject.screenObjs:
@@ -155,8 +172,7 @@ class GameClient(Handler):
         # wait for first state to come in from server
         while not self.state:
             sleep(0.05)
-        while 1:
-            
+        while 1:            
             self.updatestate()
             time_passed = self.gametick()   
             self.drawgame()      

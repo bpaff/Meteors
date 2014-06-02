@@ -110,12 +110,12 @@ class MeteorGameServer(object):
                 return        
             self.send_state_counter = 50
         state = {}
+        total_ticks = pygame.time.get_ticks()
         
         #send all the ship positions and new asteroids
         for oID in ScreenObject.screenObjs:
             obj = ScreenObject.screenObjs[oID]
-            
-            if client or obj.__class__.__name__ == "ShipObject" or obj in self.update_objs:
+            if client or isinstance(obj,Ship.ShipObject) or obj in self.update_objs:
                     
                 # map object with its position and speed values
                 state[oID] = {
@@ -131,7 +131,7 @@ class MeteorGameServer(object):
                     state[oID]["direction"]= obj.direction
                     state[oID]["lives"] = obj.lives
                     state[oID]["invis_time"] = obj.invis_time                    
-                    state[oID]["score"] = obj.get_score(pygame.time.get_ticks())
+                    state[oID]["score"] = obj.get_score(total_ticks)
                 if state[oID]["type"]== "BulletObject":
                     state[oID]["time_life"]= obj.time_life
         
@@ -139,7 +139,21 @@ class MeteorGameServer(object):
         #    count number of ships still alive
         #    if 0: get ship with highest score
         #state['WINNER'] = # ship with highest score 
-        
+        winner_exists = True
+        winner = None
+        for oID in ScreenObject.screenObjs:
+            obj = ScreenObject.screenObjs[oID]
+            if isinstance(obj,Ship.ShipObject): 
+                if obj.is_alive:
+                    winner_exists = False                    
+                if not winner or winner.get_score(total_ticks) < obj.get_score(total_ticks):
+                    winner = obj
+        if winner_exists and winner:
+            state['winner'] = winner.ID            
+        # always pass high score
+        if winner:
+            state['top_score'] = winner.get_score(total_ticks)
+            
         if client:
             client.do_send(state)
         else:
