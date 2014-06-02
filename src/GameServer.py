@@ -32,6 +32,33 @@ class MeteorGameServer(object):
         self.ships = {}
         self.start_new_game()
         
+    def start_new_game(self):
+        self.send_state_counter = 0
+        
+        # notify clients of all destroyed objects
+        for id in ScreenObject.screenObjs:
+            obj = ScreenObject.screenObjs[id]
+            obj.destroy()
+        self.send_state(0)
+        ScreenObject.screenObjs = {}
+        
+        # initiate a new game
+        pygame.init()
+        pygame.display.set_caption("Inf123 - 2to1's Game")
+        size = width, height = 1024, 768
+        self.screen = pygame.display.set_mode(size)        
+        
+        self.asteroid_spawn_counter = 0
+        self.sprites=pygame.sprite.Group()
+        self.clock=pygame.time.Clock()
+        
+        self.update_objs = {}
+        self.destroy_objs = {}
+        self.client_inputs = []
+        
+        # spawn all existing clients
+        for client in self.ships.keys():
+            self.spawnclient(client)
         
     def create_meteors(self, time):
         if time/5000 > self.asteroid_spawn_counter:
@@ -61,33 +88,6 @@ class MeteorGameServer(object):
         ScreenObject.collision_detect_all(self.sprites)
         return time_passed
     
-    def start_new_game(self):
-        self.send_state_counter = 0
-        
-        # notify clients of all destroyed objects
-        for id in ScreenObject.screenObjs:
-            obj = ScreenObject.screenObjs[id]
-            obj.destroy()
-        self.send_state(0)
-        ScreenObject.screenObjs = {}
-        
-        # initiate a new game
-        pygame.init()
-        pygame.display.set_caption("Inf123 - 2to1's Game")
-        size = width, height = 1024, 768
-        self.screen = pygame.display.set_mode(size)        
-        
-        self.asteroid_spawn_counter = 0
-        self.sprites=pygame.sprite.Group()
-        self.clock=pygame.time.Clock()
-        
-        self.update_objs = []
-        self.client_inputs = []
-        
-        # spawn all existing clients
-        for client in self.ships.keys():
-            self.spawnclient(client)
-    
     def drawgame(self):
         white = 255,255,255
         self.screen.fill(white)
@@ -116,7 +116,7 @@ class MeteorGameServer(object):
         #send all the ship positions and new asteroids
         for oID in ScreenObject.screenObjs:
             obj = ScreenObject.screenObjs[oID]
-            if client or isinstance(obj,Ship.ShipObject) or obj in self.update_objs:
+            if client or isinstance(obj,Ship.ShipObject) or obj in self.update_objs.keys() or obj in self.destroy_objs.keys():
                     
                 # map object with its position and speed values
                 state[oID] = {
@@ -135,6 +135,11 @@ class MeteorGameServer(object):
                     state[oID]["score"] = obj.get_score(total_ticks)
                 if state[oID]["type"]== "BulletObject":
                     state[oID]["time_life"]= obj.time_life
+                    
+                if not client and obj in self.destroy_objs.keys():
+                    self.destroy_objs[obj] -= 1
+                    if self.destroy_objs[obj] <= 0:
+                        self.destroy_objs.pop(obj)
         
         # TODO check for winner
         #    count number of ships still alive
@@ -162,7 +167,7 @@ class MeteorGameServer(object):
             for client in self.ships.keys():
                 client.do_send(state)
             # clear updated objects
-            self.update_objs = []
+            self.update_objs = {}
             
     def clientmsg(self, client, msg):
         self.client_inputs.append({client: msg})

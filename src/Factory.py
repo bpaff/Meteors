@@ -34,5 +34,7 @@ def LoadScreenObject(obj, vals):
     obj.position_y = vals["position_y"]
     obj.speed_x = vals["speed_x"]
     obj.speed_y = vals["speed_y"]
+    if obj.is_alive != vals["is_alive"]:
+        obj.destroy()
     
     

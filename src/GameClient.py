@@ -27,7 +27,8 @@ class GameClient(Handler):
         self.clock=pygame.time.Clock()
         self.laststate = None
         self.state = None
-        self.update_objs = []
+        self.update_objs = {}
+        self.destroy_objs = {}
         self.first_state = None
         self.first_state_loaded = False
         
@@ -82,9 +83,6 @@ class GameClient(Handler):
             else:
                 obj = ScreenObject.screenObjs[id]
                 Factory.LoadScreenObject(obj, val)
-                if obj.is_alive != val["is_alive"]:
-                    obj.destroy()
-
         self.state = None
         
     
