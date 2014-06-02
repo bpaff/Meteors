@@ -8,7 +8,7 @@ import threading
 lock = threading.Lock()
 
 host, port = 'localhost', 8888 
-#host, port = '169.234.49.64', 8888
+host, port = '169.234.49.64', 8888
 
 class GameClient(Handler):
     

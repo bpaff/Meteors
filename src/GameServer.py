@@ -108,7 +108,7 @@ class MeteorGameServer(object):
         self.send_state_counter -= time_passed
         if not client:
             if self.send_state_counter > 0:
-                return        
+                return
             self.send_state_counter = 50
         state = {}
         total_ticks = pygame.time.get_ticks()
@@ -187,8 +187,8 @@ class MeteorGameServer(object):
             self.process_client_inputs()
             time_passed = self.gametick()            
             self.send_state(time_passed)
-            # commented this out to improve performance 
-            #self.drawgame()
+            # comment this out to improve performance 
+            self.drawgame()
             
 if __name__=="__main__":
     server = MeteorGameServer()
