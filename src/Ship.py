@@ -6,10 +6,7 @@ Created on Apr 18, 2014
 import ScreenObject, Bullet, pygame, math
 from random import randrange
 
-#ships =[] ##for when we have more ships
-
 class ShipObject(ScreenObject.ScreenObject):
-#     count = 0
     
     def __init__(self, game, id=None):
         # Call the parent class constructor

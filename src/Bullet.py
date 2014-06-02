@@ -4,7 +4,6 @@ Created on Apr 18, 2014
 @author: Steven
 '''
 import ScreenObject, math, pygame, Asteroid, Ship
-bullets=[]
 
 class BulletObject(ScreenObject.ScreenObject):
     

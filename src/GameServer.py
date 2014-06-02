@@ -69,6 +69,7 @@ class MeteorGameServer(object):
             obj = ScreenObject.screenObjs[id]
             obj.destroy()
         self.send_state(0)
+        ScreenObject.screenObjs = {}
         
         # initiate a new game
         pygame.init()
